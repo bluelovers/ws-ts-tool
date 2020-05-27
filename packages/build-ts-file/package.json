@@ -1,6 +1,6 @@
 {
   "name": "build-ts-file",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "keywords": [],
   "homepage": "https://github.com/bluelovers/ws-ts-tool/tree/master/packages/build-ts-file#readme",
@@ -33,7 +33,7 @@
   "dependencies": {
     "@ts-type/package-dts": "^1.0.8",
     "cross-spawn-extra": "^2.0.0",
-    "get-current-tsconfig": "^1.0.1",
+    "get-current-tsconfig": "^1.0.2",
     "value-from-record": "^1.0.3"
   },
   "devDependencies": {
