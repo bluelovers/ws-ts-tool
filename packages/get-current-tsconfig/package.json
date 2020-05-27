@@ -1,6 +1,6 @@
 {
   "name": "get-current-tsconfig",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "license": "ISC",
   "author": "bluelovers",
@@ -24,6 +24,5 @@
   "dependencies": {
     "@ts-type/package-dts": "^1.0.8",
     "cross-spawn-extra": "^2.0.0"
-  },
-  "devDependencies": {}
+  }
 }
