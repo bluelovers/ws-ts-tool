@@ -51,30 +51,44 @@ export function tsconfigToProgram(compilerOptions: ITsconfig["compilerOptions"])
 	return Object.entries(compilerOptions)
 		.reduce((a, [key, value]) =>
 		{
+			let _skip = false;
 
 			switch (key as keyof ITsconfig["compilerOptions"])
 			{
 				case 'jsx':
-					value = valueFromRecord(value, JsxEmit)
+					value = valueFromRecord(value, JsxEmit) ?? value
 					break;
 				case 'module':
-					value = valueFromRecord(value, ModuleKind)
+					value = valueFromRecord(value, ModuleKind) ?? value
 					break;
 				case 'moduleResolution':
-					value = valueFromRecord(value, ModuleResolutionKind)
+					value = valueFromRecord(value, ModuleResolutionKind) ?? value
 					break;
 				case 'newLine':
-					value = valueFromRecord(value, NewLineKind)
+
+					if (value?.toLowerCase?.() === 'lf')
+					{
+						value = NewLineKind.LineFeed
+						//value = valueFromRecord(value, NewLineKind)
+					}
+					else
+					{
+						_skip = true;
+					}
+
 					break;
 				case 'target':
-					value = valueFromRecord(value, ScriptTarget)
+					value = valueFromRecord(value, ScriptTarget) ?? value;
 					break;
 				case 'incremental':
-					return a
+					_skip = true;
 					break;
 			}
 
-			a[key] = value;
+			if (!_skip)
+			{
+				a[key] = value;
+			}
 
 			return a
 		}, {} as ts.CompilerOptions)

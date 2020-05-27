@@ -58,27 +58,37 @@ exports.tsconfigToCliArgs = tsconfigToCliArgs;
 function tsconfigToProgram(compilerOptions) {
     return Object.entries(compilerOptions)
         .reduce((a, [key, value]) => {
+        var _a, _b, _c, _d, _e;
+        let _skip = false;
         switch (key) {
             case 'jsx':
-                value = value_from_record_1.default(value, typescript_1.JsxEmit);
+                value = (_a = value_from_record_1.default(value, typescript_1.JsxEmit)) !== null && _a !== void 0 ? _a : value;
                 break;
             case 'module':
-                value = value_from_record_1.default(value, typescript_1.ModuleKind);
+                value = (_b = value_from_record_1.default(value, typescript_1.ModuleKind)) !== null && _b !== void 0 ? _b : value;
                 break;
             case 'moduleResolution':
-                value = value_from_record_1.default(value, typescript_1.ModuleResolutionKind);
+                value = (_c = value_from_record_1.default(value, typescript_1.ModuleResolutionKind)) !== null && _c !== void 0 ? _c : value;
                 break;
             case 'newLine':
-                value = value_from_record_1.default(value, typescript_1.NewLineKind);
+                if (((_d = value === null || value === void 0 ? void 0 : value.toLowerCase) === null || _d === void 0 ? void 0 : _d.call(value)) === 'lf') {
+                    value = typescript_1.NewLineKind.LineFeed;
+                    //value = valueFromRecord(value, NewLineKind)
+                }
+                else {
+                    _skip = true;
+                }
                 break;
             case 'target':
-                value = value_from_record_1.default(value, typescript_1.ScriptTarget);
+                value = (_e = value_from_record_1.default(value, typescript_1.ScriptTarget)) !== null && _e !== void 0 ? _e : value;
                 break;
             case 'incremental':
-                return a;
+                _skip = true;
                 break;
         }
-        a[key] = value;
+        if (!_skip) {
+            a[key] = value;
+        }
         return a;
     }, {});
 }
