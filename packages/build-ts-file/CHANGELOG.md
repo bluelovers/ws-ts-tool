@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.4](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@1.0.3...build-ts-file@1.0.4) (2020-05-27)
+
+
+### Bug Fixes
+
+* ModuleResolutionKind ([8cd405e](https://github.com/bluelovers/ws-ts-tool/commit/8cd405e9b5f96ed78e3c77bc33eb3e6a40afd7d5))
+
+
+
+
+
 ## [1.0.3](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@1.0.2...build-ts-file@1.0.3) (2020-05-27)
 
 
