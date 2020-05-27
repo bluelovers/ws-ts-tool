@@ -62,7 +62,16 @@ export function tsconfigToProgram(compilerOptions: ITsconfig["compilerOptions"])
 					value = valueFromRecord(value, ModuleKind) ?? value
 					break;
 				case 'moduleResolution':
-					value = valueFromRecord(value, ModuleResolutionKind) ?? value
+
+					if (value === 'node')
+					{
+						value = ModuleResolutionKind.NodeJs
+					}
+					else
+					{
+						_skip = true;
+					}
+
 					break;
 				case 'newLine':
 

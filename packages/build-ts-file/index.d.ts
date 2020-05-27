@@ -68,7 +68,7 @@ export declare function handleOptions(files: string | string[], options?: {
         watch?: boolean;
         experimentalDecorators?: boolean;
         emitDecoratorMetadata?: boolean;
-        moduleResolution?: "classic" | "node" | {
+        moduleResolution?: "node" | "classic" | {
             [k: string]: any;
         };
         allowUnusedLabels?: boolean;

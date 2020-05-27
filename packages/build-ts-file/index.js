@@ -58,7 +58,7 @@ exports.tsconfigToCliArgs = tsconfigToCliArgs;
 function tsconfigToProgram(compilerOptions) {
     return Object.entries(compilerOptions)
         .reduce((a, [key, value]) => {
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c, _d;
         let _skip = false;
         switch (key) {
             case 'jsx':
@@ -68,10 +68,15 @@ function tsconfigToProgram(compilerOptions) {
                 value = (_b = value_from_record_1.default(value, typescript_1.ModuleKind)) !== null && _b !== void 0 ? _b : value;
                 break;
             case 'moduleResolution':
-                value = (_c = value_from_record_1.default(value, typescript_1.ModuleResolutionKind)) !== null && _c !== void 0 ? _c : value;
+                if (value === 'node') {
+                    value = typescript_1.ModuleResolutionKind.NodeJs;
+                }
+                else {
+                    _skip = true;
+                }
                 break;
             case 'newLine':
-                if (((_d = value === null || value === void 0 ? void 0 : value.toLowerCase) === null || _d === void 0 ? void 0 : _d.call(value)) === 'lf') {
+                if (((_c = value === null || value === void 0 ? void 0 : value.toLowerCase) === null || _c === void 0 ? void 0 : _c.call(value)) === 'lf') {
                     value = typescript_1.NewLineKind.LineFeed;
                     //value = valueFromRecord(value, NewLineKind)
                 }
@@ -80,7 +85,7 @@ function tsconfigToProgram(compilerOptions) {
                 }
                 break;
             case 'target':
-                value = (_e = value_from_record_1.default(value, typescript_1.ScriptTarget)) !== null && _e !== void 0 ? _e : value;
+                value = (_d = value_from_record_1.default(value, typescript_1.ScriptTarget)) !== null && _d !== void 0 ? _d : value;
                 break;
             case 'incremental':
                 _skip = true;
