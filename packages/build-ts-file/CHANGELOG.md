@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.5](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@1.0.4...build-ts-file@1.0.5) (2020-05-29)
+
+
+### Features
+
+* add support cli ([c63831a](https://github.com/bluelovers/ws-ts-tool/commit/c63831adb2c83a8c28fdbd6da9366e76302ee7d9))
+
+
+
+
+
 ## [1.0.4](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@1.0.3...build-ts-file@1.0.4) (2020-05-27)
 
 
