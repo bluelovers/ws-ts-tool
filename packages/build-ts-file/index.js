@@ -34,6 +34,7 @@ const path_1 = require("path");
 const typescript_1 = require("typescript");
 const value_from_record_1 = __importDefault(require("value-from-record"));
 const get_current_tsconfig_1 = __importDefault(require("get-current-tsconfig"));
+const logger_1 = __importDefault(require("debug-color2/logger"));
 function tsconfigToCliArgs(compilerOptions) {
     let args = Object.entries(compilerOptions)
         .reduce((a, [key, value]) => {
@@ -120,10 +121,10 @@ exports.handleOptions = handleOptions;
 function spawnEmitTsFiles(inputFiles, options) {
     let { cwd, compilerOptions, files, bin } = handleOptions(inputFiles, options);
     let args = tsconfigToCliArgs(compilerOptions);
-    console.dir(compilerOptions);
-    console.dir(args);
-    console.dir(cwd);
-    console.dir(files);
+    //console.dir(compilerOptions)
+    //console.dir(args)
+    //console.dir(cwd)
+    //console.dir(files)
     let cp = cross_spawn_extra_1.default.sync(bin, [
         ...args,
         `--tsBuildInfoFile`,
@@ -142,24 +143,27 @@ function emitTsFiles(files, options) {
         files = [files];
     }
     if (!cwd) {
-        cwd = path_1.dirname(files[0]);
+        cwd = path_1.dirname(path_1.resolve(process.cwd(), files[0]));
     }
+    files = files.map(file => path_1.resolve(cwd, file));
     let compilerOptions = tsconfigToProgram((_a = options === null || options === void 0 ? void 0 : options.compilerOptions) !== null && _a !== void 0 ? _a : get_current_tsconfig_1.default(cwd).compilerOptions);
     let program = ts.createProgram(files, compilerOptions);
     let emitResult = program.emit();
-    let allDiagnostics = ts
-        .getPreEmitDiagnostics(program)
-        .concat(emitResult.diagnostics);
-    allDiagnostics.forEach(diagnostic => {
-        if (diagnostic.file) {
-            let { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
-            let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
-            console.log(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
-        }
-        else {
-            console.log(ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
-        }
-    });
+    if (options === null || options === void 0 ? void 0 : options.verbose) {
+        let allDiagnostics = ts
+            .getPreEmitDiagnostics(program)
+            .concat(emitResult.diagnostics);
+        allDiagnostics.forEach(diagnostic => {
+            if (diagnostic.file) {
+                let { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
+                let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
+                logger_1.default.info(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
+            }
+            else {
+                logger_1.default.info(ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
+            }
+        });
+    }
     let exitCode = emitResult.emitSkipped ? 1 : 0;
     //console.log(`Process exiting with code '${exitCode}'.`);
     return {

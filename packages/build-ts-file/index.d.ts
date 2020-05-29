@@ -30,12 +30,12 @@ export declare function handleOptions(files: string | string[], options?: {
         reactNamespace?: string;
         listFiles?: boolean;
         mapRoot?: string;
-        module?: "commonjs" | "amd" | "umd" | "system" | "es6" | "es2015" | "esnext" | "none" | {
+        module?: "none" | {
             [k: string]: any;
-        };
-        newLine?: "CRLF" | "LF" | {
+        } | "commonjs" | "amd" | "umd" | "system" | "es6" | "es2015" | "esnext";
+        newLine?: {
             [k: string]: any;
-        };
+        } | "CRLF" | "LF";
         noEmit?: boolean;
         noEmitHelpers?: boolean;
         noEmitOnError?: boolean;
@@ -62,13 +62,13 @@ export declare function handleOptions(files: string | string[], options?: {
         suppressExcessPropertyErrors?: boolean;
         suppressImplicitAnyIndexErrors?: boolean;
         stripInternal?: boolean;
-        target?: "es6" | "es2015" | "esnext" | "es3" | "es5" | "es2016" | "es2017" | "es2018" | {
+        target?: "es6" | "es2015" | "esnext" | {
             [k: string]: any;
-        };
+        } | "es3" | "es5" | "es2016" | "es2017" | "es2018";
         watch?: boolean;
         experimentalDecorators?: boolean;
         emitDecoratorMetadata?: boolean;
-        moduleResolution?: "node" | "classic" | {
+        moduleResolution?: "classic" | "node" | {
             [k: string]: any;
         };
         allowUnusedLabels?: boolean;
@@ -120,6 +120,7 @@ export declare function spawnEmitTsFiles(inputFiles: string | string[], options?
 export declare function emitTsFiles(files: string | string[], options?: {
     cwd?: string;
     compilerOptions?: ITsconfig["compilerOptions"];
+    verbose?: boolean;
 }): {
     cwd: string;
     files: string[];

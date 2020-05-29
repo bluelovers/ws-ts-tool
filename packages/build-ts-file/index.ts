@@ -6,13 +6,14 @@
 import * as ts from 'typescript';
 import crossSpawn from 'cross-spawn-extra';
 import ITsconfig from '@ts-type/package-dts/tsconfig-json';
-import { dirname } from 'path';
+import { dirname, resolve } from 'path';
 // @ts-ignore
 import unparse from 'yargs-unparser';
 // @ts-ignore
 import { JsxEmit, ModuleKind, ModuleResolutionKind, NewLineKind, ScriptTarget } from 'typescript';
 import valueFromRecord, { keyFromRecord } from 'value-from-record';
 import getCurrentTsconfig from 'get-current-tsconfig';
+import console from 'debug-color2/logger';
 
 export function tsconfigToCliArgs(compilerOptions: ITsconfig["compilerOptions"]): string[]
 {
@@ -144,12 +145,10 @@ export function spawnEmitTsFiles(inputFiles: string | string[], options?: {
 
 	let args = tsconfigToCliArgs(compilerOptions);
 
-	console.dir(compilerOptions)
-	console.dir(args)
-
-	console.dir(cwd)
-
-	console.dir(files)
+	//console.dir(compilerOptions)
+	//console.dir(args)
+	//console.dir(cwd)
+	//console.dir(files)
 
 	let cp = crossSpawn.sync(bin, [
 		...args,
@@ -165,6 +164,7 @@ export function spawnEmitTsFiles(inputFiles: string | string[], options?: {
 export function emitTsFiles(files: string | string[], options?: {
 	cwd?: string,
 	compilerOptions?: ITsconfig["compilerOptions"],
+	verbose?: boolean,
 })
 {
 	let cwd = options?.cwd;
@@ -176,31 +176,36 @@ export function emitTsFiles(files: string | string[], options?: {
 
 	if (!cwd)
 	{
-		cwd = dirname(files[0])
+		cwd = dirname(resolve(process.cwd(), files[0]))
 	}
+
+	files = files.map(file => resolve(cwd, file))
 
 	let compilerOptions = tsconfigToProgram(options?.compilerOptions ?? getCurrentTsconfig(cwd).compilerOptions);
 
 	let program = ts.createProgram(files, compilerOptions as any);
 	let emitResult = program.emit();
 
-	let allDiagnostics = ts
-		.getPreEmitDiagnostics(program)
-		.concat(emitResult.diagnostics);
-
-	allDiagnostics.forEach(diagnostic =>
+	if (options?.verbose)
 	{
-		if (diagnostic.file)
+		let allDiagnostics = ts
+			.getPreEmitDiagnostics(program)
+			.concat(emitResult.diagnostics);
+
+		allDiagnostics.forEach(diagnostic =>
 		{
-			let { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
-			let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
-			console.log(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
-		}
-		else
-		{
-			console.log(ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
-		}
-	});
+			if (diagnostic.file)
+			{
+				let { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
+				let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
+				console.info(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
+			}
+			else
+			{
+				console.info(ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
+			}
+		});
+	}
 
 	let exitCode = emitResult.emitSkipped ? 1 : 0;
 	//console.log(`Process exiting with code '${exitCode}'.`);
