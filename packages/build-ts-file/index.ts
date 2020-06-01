@@ -215,6 +215,8 @@ export function emitTsFiles(files: string | string[], options?: {
 				print.info(ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
 			}
 		});
+
+		print.debug(`cwd: ${cwd}`);
 	}
 
 	if (exitCode)

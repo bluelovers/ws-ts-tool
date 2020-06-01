@@ -168,6 +168,7 @@ function emitTsFiles(files, options) {
                 print.info(ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
             }
         });
+        print.debug(`cwd: ${cwd}`);
     }
     if (exitCode) {
         print.error(`Process exiting with code '${exitCode}'.`);
