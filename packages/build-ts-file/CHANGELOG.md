@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.6](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@1.0.5...build-ts-file@1.0.6) (2020-06-01)
+
+
+### Bug Fixes
+
+* miss `#!/usr/bin/env node` ([8fe1600](https://github.com/bluelovers/ws-ts-tool/commit/8fe1600ebe81f45050560f19eb331af0684c2450))
+
+
+
+
+
 ## [1.0.5](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@1.0.4...build-ts-file@1.0.5) (2020-05-29)
 
 
