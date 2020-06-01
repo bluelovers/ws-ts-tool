@@ -183,31 +183,45 @@ export function emitTsFiles(files: string | string[], options?: {
 
 	let compilerOptions = tsconfigToProgram(options?.compilerOptions ?? getCurrentTsconfig(cwd).compilerOptions);
 
-	let program = ts.createProgram(files, compilerOptions as any);
-	let emitResult = program.emit();
+	const program = ts.createProgram(files, compilerOptions as any);
+	const emitResult = program.emit();
+
+	const exitCode = emitResult.emitSkipped ? 1 : 0;
+
+	let print = console;
+
+	if (exitCode)
+	{
+		print = print.red;
+	}
 
 	if (options?.verbose)
 	{
-		let allDiagnostics = ts
+		const allDiagnostics = ts
 			.getPreEmitDiagnostics(program)
-			.concat(emitResult.diagnostics);
+			.concat(emitResult.diagnostics)
+		;
 
 		allDiagnostics.forEach(diagnostic =>
 		{
 			if (diagnostic.file)
 			{
-				let { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
-				let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
-				console.info(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
+				const { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
+				const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
+				print.info(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
 			}
 			else
 			{
-				console.info(ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
+				print.info(ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
 			}
 		});
 	}
 
-	let exitCode = emitResult.emitSkipped ? 1 : 0;
+	if (exitCode)
+	{
+		print.error(`Process exiting with code '${exitCode}'.`);
+	}
+
 	//console.log(`Process exiting with code '${exitCode}'.`);
 
 	return {

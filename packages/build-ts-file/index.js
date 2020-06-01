@@ -147,24 +147,31 @@ function emitTsFiles(files, options) {
     }
     files = files.map(file => path_1.resolve(cwd, file));
     let compilerOptions = tsconfigToProgram((_a = options === null || options === void 0 ? void 0 : options.compilerOptions) !== null && _a !== void 0 ? _a : get_current_tsconfig_1.default(cwd).compilerOptions);
-    let program = ts.createProgram(files, compilerOptions);
-    let emitResult = program.emit();
+    const program = ts.createProgram(files, compilerOptions);
+    const emitResult = program.emit();
+    const exitCode = emitResult.emitSkipped ? 1 : 0;
+    let print = logger_1.default;
+    if (exitCode) {
+        print = print.red;
+    }
     if (options === null || options === void 0 ? void 0 : options.verbose) {
-        let allDiagnostics = ts
+        const allDiagnostics = ts
             .getPreEmitDiagnostics(program)
             .concat(emitResult.diagnostics);
         allDiagnostics.forEach(diagnostic => {
             if (diagnostic.file) {
-                let { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
-                let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
-                logger_1.default.info(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
+                const { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
+                const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
+                print.info(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
             }
             else {
-                logger_1.default.info(ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
+                print.info(ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
             }
         });
     }
-    let exitCode = emitResult.emitSkipped ? 1 : 0;
+    if (exitCode) {
+        print.error(`Process exiting with code '${exitCode}'.`);
+    }
     //console.log(`Process exiting with code '${exitCode}'.`);
     return {
         cwd,

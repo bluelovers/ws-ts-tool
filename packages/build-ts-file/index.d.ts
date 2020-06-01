@@ -30,12 +30,12 @@ export declare function handleOptions(files: string | string[], options?: {
         reactNamespace?: string;
         listFiles?: boolean;
         mapRoot?: string;
-        module?: "none" | {
+        module?: "commonjs" | "amd" | "umd" | "system" | "es6" | "es2015" | "esnext" | "none" | {
             [k: string]: any;
-        } | "commonjs" | "amd" | "umd" | "system" | "es6" | "es2015" | "esnext";
-        newLine?: {
+        };
+        newLine?: "CRLF" | "LF" | {
             [k: string]: any;
-        } | "CRLF" | "LF";
+        };
         noEmit?: boolean;
         noEmitHelpers?: boolean;
         noEmitOnError?: boolean;
@@ -62,13 +62,13 @@ export declare function handleOptions(files: string | string[], options?: {
         suppressExcessPropertyErrors?: boolean;
         suppressImplicitAnyIndexErrors?: boolean;
         stripInternal?: boolean;
-        target?: "es6" | "es2015" | "esnext" | {
+        target?: "es6" | "es2015" | "esnext" | "es3" | "es5" | "es2016" | "es2017" | "es2018" | {
             [k: string]: any;
-        } | "es3" | "es5" | "es2016" | "es2017" | "es2018";
+        };
         watch?: boolean;
         experimentalDecorators?: boolean;
         emitDecoratorMetadata?: boolean;
-        moduleResolution?: "classic" | "node" | {
+        moduleResolution?: "node" | "classic" | {
             [k: string]: any;
         };
         allowUnusedLabels?: boolean;
