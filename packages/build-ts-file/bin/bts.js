@@ -35,6 +35,7 @@ yargs_1.default
 })
     .option(`verbose`, {
     boolean: true,
+    default: true,
 })
     .command({
     command: 'tsconfig',
