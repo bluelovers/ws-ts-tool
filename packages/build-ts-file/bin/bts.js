@@ -1,7 +1,5 @@
+#!/usr/bin/env node
 "use strict";
-/**
- * Created by user on 2020/5/30.
- */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };

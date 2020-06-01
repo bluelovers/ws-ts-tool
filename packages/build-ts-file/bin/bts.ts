@@ -1,6 +1,4 @@
-/**
- * Created by user on 2020/5/30.
- */
+#!/usr/bin/env node
 
 import yargs from 'yargs';
 import getCurrentTsconfig from 'get-current-tsconfig';
