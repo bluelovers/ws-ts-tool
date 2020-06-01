@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.8](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@1.0.7...build-ts-file@1.0.8) (2020-06-01)
+
+
+### Features
+
+* tweak logger ([4ca05cc](https://github.com/bluelovers/ws-ts-tool/commit/4ca05cc2d70a5871019ccc90c7cab7fc1545141b))
+
+
+
+
+
 ## [1.0.7](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@1.0.6...build-ts-file@1.0.7) (2020-06-01)
 
 
