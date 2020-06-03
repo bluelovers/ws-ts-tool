@@ -208,20 +208,22 @@ export function emitTsFiles(files: string | string[], options?: {
 			{
 				const { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
 				const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
-				print.info(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
+				print.info(`[Diagnostic]`, `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
 			}
 			else
 			{
-				print.info(ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
+				print.info(`[Diagnostic]`, ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
 			}
 		});
 
-		print.debug(`cwd: ${cwd}`);
+		print.debug(`[CWD] ${cwd}`);
+
+
 	}
 
 	if (exitCode)
 	{
-		print.error(`Process exiting with code '${exitCode}'.`);
+		print.error(`[Program] Process exiting with code '${exitCode}'.`);
 	}
 
 	//console.log(`Process exiting with code '${exitCode}'.`);
@@ -232,6 +234,7 @@ export function emitTsFiles(files: string | string[], options?: {
 		exitCode,
 		emitResult,
 		compilerOptions,
+		program,
 	}
 }
 

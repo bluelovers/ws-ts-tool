@@ -127,5 +127,6 @@ export declare function emitTsFiles(files: string | string[], options?: {
     exitCode: number;
     emitResult: ts.EmitResult;
     compilerOptions: ts.CompilerOptions;
+    program: ts.Program;
 };
 export default emitTsFiles;

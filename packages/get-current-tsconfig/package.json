@@ -33,5 +33,8 @@
   "dependencies": {
     "@ts-type/package-dts": "^1.0.8",
     "cross-spawn-extra": "^2.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "*"
   }
 }
