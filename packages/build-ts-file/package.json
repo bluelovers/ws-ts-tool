@@ -1,6 +1,6 @@
 {
   "name": "build-ts-file",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "",
   "keywords": [],
   "homepage": "https://github.com/bluelovers/ws-ts-tool/tree/master/packages/build-ts-file#readme",
@@ -39,7 +39,7 @@
     "@ts-type/package-dts": "^1.0.10",
     "cross-spawn-extra": "^2.0.0",
     "debug-color2": "^1.1.7",
-    "get-current-tsconfig": "^1.0.2",
+    "get-current-tsconfig": "^1.0.3",
     "value-from-record": "^1.0.3",
     "yargs": "^15.3.1"
   },
