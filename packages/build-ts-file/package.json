@@ -15,8 +15,8 @@
   "author": "bluelovers",
   "main": "index.js",
   "bin": {
-    "build-ts-file": "bin/bts.js",
-    "bts": "bin/bts.js"
+    "bts": "bin/bts.js",
+    "build-ts-file": "bin/bts.js"
   },
   "scripts": {
     "coverage": "npx nyc yarn run test",
@@ -36,17 +36,14 @@
   },
   "dependencies": {
     "@bluelovers/fast-glob": "^3.0.4",
-    "@ts-type/package-dts": "^1.0.10",
-    "cross-spawn-extra": "^2.0.0",
-    "debug-color2": "^1.1.7",
+    "@ts-type/package-dts": "^1.0.30",
+    "cross-spawn-extra": "^2.1.0",
+    "debug-color2": "^1.2.3",
     "get-current-tsconfig": "^1.0.3",
     "value-from-record": "^1.0.3",
-    "yargs": "^15.3.1"
+    "yargs": "^15.4.1"
   },
-  "devDependencies": {
-    "@types/yargs": "^15.0.5",
-    "typescript": "next"
-  },
+  "devDependencies": {},
   "peerDependencies": {
     "typescript": "*"
   }

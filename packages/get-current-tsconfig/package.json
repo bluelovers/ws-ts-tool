@@ -31,8 +31,9 @@
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
   "dependencies": {
-    "@ts-type/package-dts": "^1.0.8",
-    "cross-spawn-extra": "^2.0.0"
+    "@ts-type/package-dts": "^1.0.30",
+    "cross-spawn-extra": "^2.1.0",
+    "fs-extra": "^9.0.1"
   },
   "peerDependencies": {
     "typescript": "*"

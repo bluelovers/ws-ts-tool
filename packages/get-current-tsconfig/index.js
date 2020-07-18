@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCurrentTsconfig = exports.handleOptions = void 0;
+exports.outputCurrentTsconfig = exports.getCurrentTsconfig = exports.handleOptions = void 0;
 const cross_spawn_extra_1 = require("cross-spawn-extra");
+const fs_extra_1 = require("fs-extra");
+const path_1 = require("path");
 function handleOptions(...argv) {
     let options = {};
     if (typeof argv[0] === 'object' && argv[0] !== null) {
@@ -42,5 +44,19 @@ function getCurrentTsconfig(...argv) {
     return JSON.parse(msg);
 }
 exports.getCurrentTsconfig = getCurrentTsconfig;
+function outputCurrentTsconfig(options) {
+    var _a, _b;
+    options = {
+        ...options,
+    };
+    (_a = options.cwd) !== null && _a !== void 0 ? _a : (options.cwd = process.cwd());
+    (_b = options.outputFile) !== null && _b !== void 0 ? _b : (options.outputFile = 'tsconfig.json');
+    const newTsconfig = getCurrentTsconfig(options);
+    delete newTsconfig.files;
+    fs_extra_1.outputJSONSync(path_1.resolve(options.cwd, options.outputFile), newTsconfig, {
+        spaces: 2,
+    });
+}
+exports.outputCurrentTsconfig = outputCurrentTsconfig;
 exports.default = getCurrentTsconfig;
 //# sourceMappingURL=index.js.map

@@ -19,9 +19,11 @@
   },
   "resolutions": {},
   "devDependencies": {
-    "@bluelovers/tsconfig": "*",
+    "@bluelovers/tsconfig": "1.0.20",
+    "@types/fs-extra": "^9.0.1",
     "@types/node": "*",
-    "typescript": "^4.0.0-dev.20200527"
+    "@types/yargs": "^15.0.5",
+    "typescript": "next"
   },
   "peerDependencies": {
     "lerna": "^3"
