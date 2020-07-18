@@ -1,14 +1,37 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCurrentTsconfig = void 0;
-const cross_spawn_extra_1 = __importDefault(require("cross-spawn-extra"));
-function getCurrentTsconfig(cwd, bin) {
-    let cp = cross_spawn_extra_1.default.sync(bin || 'tsc', [
+exports.getCurrentTsconfig = exports.handleOptions = void 0;
+const cross_spawn_extra_1 = require("cross-spawn-extra");
+function handleOptions(...argv) {
+    let options = {};
+    if (typeof argv[0] === 'object' && argv[0] !== null) {
+        options = argv[0];
+    }
+    else {
+        let [cwd, bin, sourceFile, extraArgv] = argv;
+        options = {
+            // @ts-ignore
+            cwd,
+            bin,
+            sourceFile,
+            extraArgv,
+        };
+    }
+    return options;
+}
+exports.handleOptions = handleOptions;
+function getCurrentTsconfig(...argv) {
+    const { cwd, bin, sourceFile, extraArgv } = handleOptions(...argv);
+    const binArgv = [
         `--showConfig`,
-    ], {
+    ];
+    if (sourceFile === null || sourceFile === void 0 ? void 0 : sourceFile.length) {
+        binArgv.push('-p', sourceFile);
+    }
+    if (extraArgv === null || extraArgv === void 0 ? void 0 : extraArgv.length) {
+        binArgv.push(...extraArgv);
+    }
+    const cp = cross_spawn_extra_1.sync(bin || 'tsc', binArgv, {
         cwd,
     });
     // @ts-ignore
