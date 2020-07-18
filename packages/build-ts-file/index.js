@@ -17,7 +17,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -108,7 +108,10 @@ function handleOptions(files, options) {
     if (!cwd) {
         cwd = path_1.dirname(files[0]);
     }
-    const compilerOptions = (_a = options === null || options === void 0 ? void 0 : options.compilerOptions) !== null && _a !== void 0 ? _a : get_current_tsconfig_1.default(cwd).compilerOptions;
+    const compilerOptions = (_a = options === null || options === void 0 ? void 0 : options.compilerOptions) !== null && _a !== void 0 ? _a : get_current_tsconfig_1.default({
+        ...options === null || options === void 0 ? void 0 : options.getCurrentTsconfigOptions,
+        cwd,
+    }).compilerOptions;
     const bin = (options === null || options === void 0 ? void 0 : options.bin) || 'tsc';
     return {
         files,

@@ -12,7 +12,7 @@ import unparse from 'yargs-unparser';
 // @ts-ignore
 import { JsxEmit, ModuleKind, ModuleResolutionKind, NewLineKind, ScriptTarget } from 'typescript';
 import valueFromRecord, { keyFromRecord } from 'value-from-record';
-import getCurrentTsconfig from 'get-current-tsconfig';
+import getCurrentTsconfig, { IOptions as IGetCurrentTsconfigOptions } from 'get-current-tsconfig';
 import console from 'debug-color2/logger';
 
 export function tsconfigToCliArgs(compilerOptions: ITsconfig["compilerOptions"]): string[]
@@ -104,11 +104,15 @@ export function tsconfigToProgram(compilerOptions: ITsconfig["compilerOptions"])
 		}, {} as ts.CompilerOptions)
 }
 
-export function handleOptions(files: string | string[], options?: {
-	bin?: string,
-	cwd?: string,
-	compilerOptions?: ITsconfig["compilerOptions"],
-})
+export interface IOptions
+{
+	bin?: string;
+	cwd?: string;
+	compilerOptions?: ITsconfig["compilerOptions"];
+	getCurrentTsconfigOptions?: IGetCurrentTsconfigOptions;
+}
+
+export function handleOptions(files: string | string[], options?: IOptions)
 {
 	let cwd = options?.cwd;
 
@@ -122,7 +126,10 @@ export function handleOptions(files: string | string[], options?: {
 		cwd = dirname(files[0])
 	}
 
-	const compilerOptions = options?.compilerOptions ?? getCurrentTsconfig(cwd).compilerOptions;
+	const compilerOptions = options?.compilerOptions ?? getCurrentTsconfig({
+		...options?.getCurrentTsconfigOptions,
+		cwd,
+	}).compilerOptions;
 
 	const bin = options?.bin || 'tsc';
 
@@ -134,11 +141,7 @@ export function handleOptions(files: string | string[], options?: {
 	}
 }
 
-export function spawnEmitTsFiles(inputFiles: string | string[], options?: {
-	bin?: string,
-	cwd?: string,
-	compilerOptions?: ITsconfig["compilerOptions"],
-})
+export function spawnEmitTsFiles(inputFiles: string | string[], options?: IOptions)
 {
 
 	let { cwd, compilerOptions, files, bin } = handleOptions(inputFiles, options)

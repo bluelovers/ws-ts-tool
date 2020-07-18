@@ -3,13 +3,16 @@
  */
 import * as ts from 'typescript';
 import ITsconfig from '@ts-type/package-dts/tsconfig-json';
+import { IOptions as IGetCurrentTsconfigOptions } from 'get-current-tsconfig';
 export declare function tsconfigToCliArgs(compilerOptions: ITsconfig["compilerOptions"]): string[];
 export declare function tsconfigToProgram(compilerOptions: ITsconfig["compilerOptions"]): ts.CompilerOptions;
-export declare function handleOptions(files: string | string[], options?: {
+export interface IOptions {
     bin?: string;
     cwd?: string;
     compilerOptions?: ITsconfig["compilerOptions"];
-}): {
+    getCurrentTsconfigOptions?: IGetCurrentTsconfigOptions;
+}
+export declare function handleOptions(files: string | string[], options?: IOptions): {
     files: string[];
     cwd: string;
     bin: string;
@@ -112,11 +115,7 @@ export declare function handleOptions(files: string | string[], options?: {
         resolveJsonModule?: boolean;
     };
 };
-export declare function spawnEmitTsFiles(inputFiles: string | string[], options?: {
-    bin?: string;
-    cwd?: string;
-    compilerOptions?: ITsconfig["compilerOptions"];
-}): void;
+export declare function spawnEmitTsFiles(inputFiles: string | string[], options?: IOptions): void;
 export declare function emitTsFiles(files: string | string[], options?: {
     cwd?: string;
     compilerOptions?: ITsconfig["compilerOptions"];
