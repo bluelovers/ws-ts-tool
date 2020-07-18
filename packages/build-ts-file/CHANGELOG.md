@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.10](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@1.0.9...build-ts-file@1.0.10) (2020-07-18)
+
+
+### Features
+
+* add `outputCurrentTsconfig` ([adb7c28](https://github.com/bluelovers/ws-ts-tool/commit/adb7c28e0bab68cffbce010ea1d76ab91dad91b4))
+* add output-tsconfig bin ([493814f](https://github.com/bluelovers/ws-ts-tool/commit/493814ff2e6bbb9f3fe419b4430e3f2a212ec639))
+
+
+
+
+
 ## [1.0.9](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@1.0.8...build-ts-file@1.0.9) (2020-06-03)
 
 **Note:** Version bump only for package build-ts-file

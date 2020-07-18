@@ -1,6 +1,6 @@
 {
   "name": "get-current-tsconfig",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "keywords": [],
   "homepage": "https://github.com/bluelovers/ws-ts-tool/tree/master/packages/get-current-tsconfig#readme",
@@ -42,7 +42,6 @@
     "fs-extra": "^9.0.1",
     "yargs": "^15.4.1"
   },
-  "devDependencies": {},
   "peerDependencies": {
     "typescript": "*"
   }
