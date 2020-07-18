@@ -53,9 +53,11 @@ function outputCurrentTsconfig(options) {
     (_b = options.outputFile) !== null && _b !== void 0 ? _b : (options.outputFile = 'tsconfig.json');
     const newTsconfig = getCurrentTsconfig(options);
     delete newTsconfig.files;
-    fs_extra_1.outputJSONSync(path_1.resolve(options.cwd, options.outputFile), newTsconfig, {
+    let outputFile = path_1.resolve(options.cwd, options.outputFile);
+    fs_extra_1.outputJSONSync(outputFile, newTsconfig, {
         spaces: 2,
     });
+    return outputFile;
 }
 exports.outputCurrentTsconfig = outputCurrentTsconfig;
 exports.default = getCurrentTsconfig;

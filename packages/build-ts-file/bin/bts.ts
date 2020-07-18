@@ -24,13 +24,6 @@ yargs
 		array: true,
 		default: [] as string[],
 	})
-	.option(`cwd`, {
-		alias: [
-			'c',
-		],
-		string: true,
-		normalize: true,
-	})
 	.option(`verbose`, {
 		boolean: true,
 		default: true,

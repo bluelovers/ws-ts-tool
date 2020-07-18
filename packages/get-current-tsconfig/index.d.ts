@@ -18,5 +18,5 @@ export declare type IOptionsArgv = [
 ];
 export declare function handleOptions(...argv: IOptionsArgv): IOptions;
 export declare function getCurrentTsconfig(...argv: IOptionsArgv): ITsconfig;
-export declare function outputCurrentTsconfig(options?: IOptionsOutput): void;
+export declare function outputCurrentTsconfig(options?: IOptionsOutput): string;
 export default getCurrentTsconfig;

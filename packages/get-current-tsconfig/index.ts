@@ -96,9 +96,13 @@ export function outputCurrentTsconfig(options?: IOptionsOutput)
 
 	delete newTsconfig.files;
 
-	outputJSONSync(resolve(options.cwd, options.outputFile), newTsconfig, {
+	let outputFile = resolve(options.cwd, options.outputFile);
+
+	outputJSONSync(outputFile, newTsconfig, {
 		spaces: 2,
 	})
+
+	return outputFile
 }
 
 export default getCurrentTsconfig
