@@ -17,7 +17,7 @@ export declare function handleOptions(files: string | string[], options?: IOptio
     cwd: string;
     bin: string;
     compilerOptions: {
-        [k: string]: any;
+        [k: string]: unknown;
         charset?: string;
         composite?: boolean;
         declaration?: boolean;
@@ -33,12 +33,12 @@ export declare function handleOptions(files: string | string[], options?: IOptio
         reactNamespace?: string;
         listFiles?: boolean;
         mapRoot?: string;
-        module?: "none" | {
-            [k: string]: any;
-        } | "commonjs" | "amd" | "umd" | "system" | "es6" | "es2015" | "esnext";
+        module?: {
+            [k: string]: unknown;
+        } | "CommonJS" | "AMD" | "System" | "UMD" | "ES6" | "ES2015" | "ES2020" | "ESNext" | "None";
         newLine?: {
-            [k: string]: any;
-        } | "CRLF" | "LF";
+            [k: string]: unknown;
+        } | "crlf" | "lf";
         noEmit?: boolean;
         noEmitHelpers?: boolean;
         noEmitOnError?: boolean;
@@ -65,15 +65,15 @@ export declare function handleOptions(files: string | string[], options?: IOptio
         suppressExcessPropertyErrors?: boolean;
         suppressImplicitAnyIndexErrors?: boolean;
         stripInternal?: boolean;
-        target?: "es6" | "es2015" | "esnext" | {
-            [k: string]: any;
-        } | "es3" | "es5" | "es2016" | "es2017" | "es2018";
+        target?: "ES6" | "ES2015" | "ES2020" | "ESNext" | {
+            [k: string]: unknown;
+        } | "ES3" | "ES5" | "ES2016" | "ES2017" | "ES2018" | "ES2019";
         watch?: boolean;
         experimentalDecorators?: boolean;
         emitDecoratorMetadata?: boolean;
-        moduleResolution?: "classic" | "node" | {
-            [k: string]: any;
-        };
+        moduleResolution?: {
+            [k: string]: unknown;
+        } | "Classic" | "Node";
         allowUnusedLabels?: boolean;
         noImplicitReturns?: boolean;
         noFallthroughCasesInSwitch?: boolean;
@@ -84,7 +84,7 @@ export declare function handleOptions(files: string | string[], options?: IOptio
             [k: string]: string[];
         };
         plugins?: {
-            [k: string]: any;
+            [k: string]: unknown;
             name?: string;
         }[];
         rootDirs?: string[];
@@ -97,11 +97,35 @@ export declare function handleOptions(files: string | string[], options?: IOptio
         noImplicitUseStrict?: boolean;
         listEmittedFiles?: boolean;
         disableSizeLimit?: boolean;
-        lib?: ("es6" | "es2015" | "esnext" | "es5" | "es2016" | "es2017" | "es2018" | "es7" | "dom" | "dom.iterable" | "webworker" | "scripthost" | "es2015.core" | "es2015.collection" | "es2015.generator" | "es2015.iterable" | "es2015.promise" | "es2015.proxy" | "es2015.reflect" | "es2015.symbol" | "es2015.symbol.wellknown" | "es2016.array.include" | "es2017.object" | "es2017.intl" | "es2017.sharedmemory" | "es2017.string" | "es2017.typedarrays" | "es2018.intl" | "es2018.promise" | "es2018.regexp" | "esnext.asynciterable" | "esnext.array" | "esnext.intl" | "esnext.symbol")[];
+        lib?: ("ES6" | "ES2015" | "ES2020" | "ESNext" | "ES5" | "ES2016" | "ES2017" | "ES2018" | "ES2019" | {
+            [k: string]: unknown;
+        } | {
+            [k: string]: unknown;
+        } | {
+            [k: string]: unknown;
+        } | {
+            [k: string]: unknown;
+        } | {
+            [k: string]: unknown;
+        } | {
+            [k: string]: unknown;
+        } | {
+            [k: string]: unknown;
+        } | {
+            [k: string]: unknown;
+        } | {
+            [k: string]: unknown;
+        } | {
+            [k: string]: unknown;
+        } | {
+            [k: string]: unknown;
+        } | "ES2015.Collection" | "ES2015.Core" | "ES2015.Generator" | "ES2015.Iterable" | "ES2015.Promise" | "ES2015.Proxy" | "ES2015.Reflect" | "ES2015.Symbol.WellKnown" | "ES2015.Symbol" | "ES2016.Array.Include" | "ES2017.Intl" | "ES2017.Object" | "ES2017.SharedMemory" | "ES2017.String" | "ES2017.TypedArrays" | "ES2018.AsyncGenerator" | "ES2018.AsyncIterable" | "ES2018.Intl" | "ES2018.Promise" | "ES2018.Regexp" | "ES2019.Array" | "ES2019.Object" | "ES2019.String" | "ES2019.Symbol" | "ES2020.BigInt" | "ES2020.Promise" | "ES2020.String" | "ES2020.Symbol.WellKnown" | "ESNext.Array" | "ESNext.AsyncIterable" | "ESNext.BigInt" | "ESNext.Intl" | "ESNext.Promise" | "ESNext.String" | "ESNext.Symbol" | "DOM" | "DOM.Iterable" | "ScriptHost" | "WebWorker" | "WebWorker.ImportScripts")[];
         strictNullChecks?: boolean;
         maxNodeModuleJsDepth?: number;
         importHelpers?: boolean;
+        importsNotUsedAsValues?: "error" | "preserve" | "remove";
         jsxFactory?: string;
+        jsxFragmentFactory?: string;
         alwaysStrict?: boolean;
         strict?: boolean;
         strictBindCallApply?: boolean;
@@ -110,9 +134,12 @@ export declare function handleOptions(files: string | string[], options?: IOptio
         strictFunctionTypes?: boolean;
         strictPropertyInitialization?: boolean;
         esModuleInterop?: boolean;
+        allowUmdGlobalAccess?: boolean;
         keyofStringsOnly?: boolean;
+        useDefineForClassFields?: boolean;
         declarationMap?: boolean;
         resolveJsonModule?: boolean;
+        assumeChangesOnlyAffectDirectDependencies?: boolean;
     };
 };
 export declare function spawnEmitTsFiles(inputFiles: string | string[], options?: IOptions): void;

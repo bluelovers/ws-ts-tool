@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@bluelovers/fast-glob": "^3.0.4",
-    "@ts-type/package-dts": "^1.0.30",
+    "@ts-type/package-dts": "^1.0.33",
     "cross-spawn-extra": "^2.1.0",
     "debug-color2": "^1.2.3",
     "get-current-tsconfig": "^1.0.5",
