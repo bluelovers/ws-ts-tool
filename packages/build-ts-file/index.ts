@@ -57,10 +57,10 @@ export function tsconfigToProgram(compilerOptions: ITsconfig["compilerOptions"])
 			switch (key as keyof ITsconfig["compilerOptions"])
 			{
 				case 'jsx':
-					value = valueFromRecord(value, JsxEmit) ?? value
+					value = valueFromRecord<string>(value, JsxEmit) ?? value
 					break;
 				case 'module':
-					value = valueFromRecord(value, ModuleKind) ?? value
+					value = valueFromRecord<string>(value, ModuleKind) ?? value
 					break;
 				case 'moduleResolution':
 
@@ -76,7 +76,7 @@ export function tsconfigToProgram(compilerOptions: ITsconfig["compilerOptions"])
 					break;
 				case 'newLine':
 
-					if (value?.toLowerCase?.() === 'lf')
+					if ((value as string)?.toLowerCase?.() === 'lf')
 					{
 						value = NewLineKind.LineFeed
 						//value = valueFromRecord(value, NewLineKind)
@@ -88,7 +88,7 @@ export function tsconfigToProgram(compilerOptions: ITsconfig["compilerOptions"])
 
 					break;
 				case 'target':
-					value = valueFromRecord(value, ScriptTarget) ?? value;
+					value = valueFromRecord<string>(value, ScriptTarget) ?? value;
 					break;
 				case 'incremental':
 					_skip = true;
@@ -97,6 +97,7 @@ export function tsconfigToProgram(compilerOptions: ITsconfig["compilerOptions"])
 
 			if (!_skip)
 			{
+				// @ts-ignore
 				a[key] = value;
 			}
 

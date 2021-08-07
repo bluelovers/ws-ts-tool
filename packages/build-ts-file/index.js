@@ -2,39 +2,18 @@
 /**
  * Created by user on 2020/5/27.
  */
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.emitTsFiles = exports.spawnEmitTsFiles = exports.handleOptions = exports.tsconfigToProgram = exports.tsconfigToCliArgs = void 0;
+const tslib_1 = require("tslib");
 // @ts-ignore
-const ts = __importStar(require("typescript"));
-const cross_spawn_extra_1 = __importDefault(require("cross-spawn-extra"));
+const ts = (0, tslib_1.__importStar)(require("typescript"));
+const cross_spawn_extra_1 = (0, tslib_1.__importDefault)(require("cross-spawn-extra"));
 const path_1 = require("path");
 // @ts-ignore
 const typescript_1 = require("typescript");
-const value_from_record_1 = __importDefault(require("value-from-record"));
-const get_current_tsconfig_1 = __importDefault(require("get-current-tsconfig"));
-const logger_1 = __importDefault(require("debug-color2/logger"));
+const value_from_record_1 = (0, tslib_1.__importDefault)(require("value-from-record"));
+const get_current_tsconfig_1 = (0, tslib_1.__importDefault)(require("get-current-tsconfig"));
+const logger_1 = (0, tslib_1.__importDefault)(require("debug-color2/logger"));
 function tsconfigToCliArgs(compilerOptions) {
     let args = Object.entries(compilerOptions)
         .reduce((a, [key, value]) => {
@@ -59,14 +38,14 @@ exports.tsconfigToCliArgs = tsconfigToCliArgs;
 function tsconfigToProgram(compilerOptions) {
     return Object.entries(compilerOptions)
         .reduce((a, [key, value]) => {
-        var _a, _b, _c, _d;
+        var _a, _b, _c, _d, _e;
         let _skip = false;
         switch (key) {
             case 'jsx':
-                value = (_a = value_from_record_1.default(value, typescript_1.JsxEmit)) !== null && _a !== void 0 ? _a : value;
+                value = (_a = (0, value_from_record_1.default)(value, typescript_1.JsxEmit)) !== null && _a !== void 0 ? _a : value;
                 break;
             case 'module':
-                value = (_b = value_from_record_1.default(value, typescript_1.ModuleKind)) !== null && _b !== void 0 ? _b : value;
+                value = (_b = (0, value_from_record_1.default)(value, typescript_1.ModuleKind)) !== null && _b !== void 0 ? _b : value;
                 break;
             case 'moduleResolution':
                 if (value === 'node') {
@@ -77,7 +56,7 @@ function tsconfigToProgram(compilerOptions) {
                 }
                 break;
             case 'newLine':
-                if (((_c = value === null || value === void 0 ? void 0 : value.toLowerCase) === null || _c === void 0 ? void 0 : _c.call(value)) === 'lf') {
+                if (((_d = (_c = value) === null || _c === void 0 ? void 0 : _c.toLowerCase) === null || _d === void 0 ? void 0 : _d.call(_c)) === 'lf') {
                     value = typescript_1.NewLineKind.LineFeed;
                     //value = valueFromRecord(value, NewLineKind)
                 }
@@ -86,13 +65,14 @@ function tsconfigToProgram(compilerOptions) {
                 }
                 break;
             case 'target':
-                value = (_d = value_from_record_1.default(value, typescript_1.ScriptTarget)) !== null && _d !== void 0 ? _d : value;
+                value = (_e = (0, value_from_record_1.default)(value, typescript_1.ScriptTarget)) !== null && _e !== void 0 ? _e : value;
                 break;
             case 'incremental':
                 _skip = true;
                 break;
         }
         if (!_skip) {
+            // @ts-ignore
             a[key] = value;
         }
         return a;
@@ -106,9 +86,9 @@ function handleOptions(files, options) {
         files = [files];
     }
     if (!cwd) {
-        cwd = path_1.dirname(files[0]);
+        cwd = (0, path_1.dirname)(files[0]);
     }
-    const compilerOptions = (_a = options === null || options === void 0 ? void 0 : options.compilerOptions) !== null && _a !== void 0 ? _a : get_current_tsconfig_1.default({
+    const compilerOptions = (_a = options === null || options === void 0 ? void 0 : options.compilerOptions) !== null && _a !== void 0 ? _a : (0, get_current_tsconfig_1.default)({
         ...options === null || options === void 0 ? void 0 : options.getCurrentTsconfigOptions,
         cwd,
     }).compilerOptions;
@@ -146,10 +126,10 @@ function emitTsFiles(files, options) {
         files = [files];
     }
     if (!cwd) {
-        cwd = path_1.dirname(path_1.resolve(process.cwd(), files[0]));
+        cwd = (0, path_1.dirname)((0, path_1.resolve)(process.cwd(), files[0]));
     }
-    files = files.map(file => path_1.resolve(cwd, file));
-    let compilerOptions = tsconfigToProgram((_a = options === null || options === void 0 ? void 0 : options.compilerOptions) !== null && _a !== void 0 ? _a : get_current_tsconfig_1.default(cwd).compilerOptions);
+    files = files.map(file => (0, path_1.resolve)(cwd, file));
+    let compilerOptions = tsconfigToProgram((_a = options === null || options === void 0 ? void 0 : options.compilerOptions) !== null && _a !== void 0 ? _a : (0, get_current_tsconfig_1.default)(cwd).compilerOptions);
     const program = ts.createProgram(files, compilerOptions);
     const emitResult = program.emit();
     const exitCode = emitResult.emitSkipped ? 1 : 0;

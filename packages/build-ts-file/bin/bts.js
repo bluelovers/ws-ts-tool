@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const yargs_1 = __importDefault(require("yargs"));
-const get_current_tsconfig_1 = __importDefault(require("get-current-tsconfig"));
-const bluebird_1 = __importDefault(require("@bluelovers/fast-glob/bluebird"));
-const index_1 = __importDefault(require("../index"));
-const logger_1 = __importDefault(require("debug-color2/logger"));
+const tslib_1 = require("tslib");
+const yargs_1 = (0, tslib_1.__importDefault)(require("yargs"));
+const get_current_tsconfig_1 = (0, tslib_1.__importDefault)(require("get-current-tsconfig"));
+const bluebird_1 = (0, tslib_1.__importDefault)(require("@bluelovers/fast-glob/bluebird"));
+const index_1 = (0, tslib_1.__importDefault)(require("../index"));
+const logger_1 = (0, tslib_1.__importDefault)(require("debug-color2/logger"));
 yargs_1.default
     .option(`cwd`, {
     alias: [
@@ -37,7 +35,7 @@ yargs_1.default
         'conf',
     ],
     handler(args) {
-        logger_1.default.dir(get_current_tsconfig_1.default(args.cwd));
+        logger_1.default.dir((0, get_current_tsconfig_1.default)(args.cwd));
     },
 })
     .command({
@@ -67,7 +65,7 @@ yargs_1.default
         })
             .mapSeries(file => {
             verbose && logger_1.default.debug(`emit:`, file);
-            let ret = index_1.default(file, {
+            let ret = (0, index_1.default)(file, {
                 cwd: args.cwd,
                 verbose,
             });

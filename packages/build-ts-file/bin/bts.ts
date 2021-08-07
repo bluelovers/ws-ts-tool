@@ -60,7 +60,7 @@ yargs
 			return FastGlob
 				.async<string>([
 					...args._,
-				], {
+				] as any, {
 					cwd,
 					ignore,
 					absolute: true,

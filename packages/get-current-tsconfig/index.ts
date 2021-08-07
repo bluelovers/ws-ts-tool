@@ -1,6 +1,6 @@
 import ITsconfig from '@ts-type/package-dts/tsconfig-json';
 import { sync as crossSpawnSync } from 'cross-spawn-extra';
-import { readJSONSync, outputJSONSync } from 'fs-extra';
+import { readJSONSync, outputJSONSync, copySync } from 'fs-extra';
 import { resolve } from 'path';
 
 export interface IOptions
@@ -80,7 +80,11 @@ export function getCurrentTsconfig(...argv: IOptionsArgv): ITsconfig
 		throw new Error(msg)
 	}
 
-	return JSON.parse(msg)
+	const newTsconfig = JSON.parse(msg)
+
+	delete newTsconfig.files;
+
+	return newTsconfig
 }
 
 export function outputCurrentTsconfig(options?: IOptionsOutput)
@@ -94,9 +98,16 @@ export function outputCurrentTsconfig(options?: IOptionsOutput)
 
 	const newTsconfig = getCurrentTsconfig(options);
 
-	delete newTsconfig.files;
-
 	let outputFile = resolve(options.cwd, options.outputFile);
+
+	try
+	{
+		copySync(outputFile, outputFile + '.bak', {
+			preserveTimestamps: true,
+		});
+	}
+	catch (e)
+	{}
 
 	outputJSONSync(outputFile, newTsconfig, {
 		spaces: 2,

@@ -1,13 +1,11 @@
 #!/usr/bin/env node
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const logger_1 = __importDefault(require("debug-color2/logger"));
-const yargs_1 = __importDefault(require("yargs"));
-const index_1 = require("../index");
-let argv = yargs_1.default
+const tslib_1 = require("tslib");
+const logger_1 = (0, tslib_1.__importDefault)(require("debug-color2/logger"));
+const yargs_1 = (0, tslib_1.__importDefault)(require("yargs"));
+const index_1 = (0, tslib_1.__importStar)(require("../index"));
+const argv = yargs_1.default
     .option(`cwd`, {
     alias: [
         'c',
@@ -33,7 +31,20 @@ let argv = yargs_1.default
     string: true,
     normalize: true,
 })
-    .argv;
-let file = index_1.outputCurrentTsconfig(argv);
-logger_1.default.log(`create tsconfig file: ${file}`);
+    .option(`print`, {
+    alias: [
+        'p',
+    ],
+    boolean: true,
+    default: true,
+})
+    .parseSync();
+if (argv.print) {
+    let json = (0, index_1.default)(argv);
+    console.log(JSON.stringify(json, null, 2));
+}
+else {
+    let file = (0, index_1.outputCurrentTsconfig)(argv);
+    logger_1.default.success(`outpput tsconfig to file: ${file}`);
+}
 //# sourceMappingURL=output-tsconfig.js.map

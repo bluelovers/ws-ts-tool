@@ -36,12 +36,13 @@
   },
   "dependencies": {
     "@bluelovers/fast-glob": "^3.0.4",
-    "@ts-type/package-dts": "^1.0.33",
+    "@ts-type/package-dts": "^1.0.50",
     "cross-spawn-extra": "^2.1.0",
-    "debug-color2": "^1.2.3",
+    "debug-color2": "^1.2.7",
     "get-current-tsconfig": "^1.0.6",
+    "tslib": "^2.3.0",
     "value-from-record": "^1.0.3",
-    "yargs": "^15.4.1"
+    "yargs": "^17.1.0"
   },
   "peerDependencies": {
     "typescript": "*"

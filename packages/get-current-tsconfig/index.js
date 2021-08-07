@@ -33,7 +33,7 @@ function getCurrentTsconfig(...argv) {
     if (extraArgv === null || extraArgv === void 0 ? void 0 : extraArgv.length) {
         binArgv.push(...extraArgv);
     }
-    const cp = cross_spawn_extra_1.sync(bin || 'tsc', binArgv, {
+    const cp = (0, cross_spawn_extra_1.sync)(bin || 'tsc', binArgv, {
         cwd,
     });
     // @ts-ignore
@@ -41,7 +41,9 @@ function getCurrentTsconfig(...argv) {
     if (cp.status) {
         throw new Error(msg);
     }
-    return JSON.parse(msg);
+    const newTsconfig = JSON.parse(msg);
+    delete newTsconfig.files;
+    return newTsconfig;
 }
 exports.getCurrentTsconfig = getCurrentTsconfig;
 function outputCurrentTsconfig(options) {
@@ -52,9 +54,14 @@ function outputCurrentTsconfig(options) {
     (_a = options.cwd) !== null && _a !== void 0 ? _a : (options.cwd = process.cwd());
     (_b = options.outputFile) !== null && _b !== void 0 ? _b : (options.outputFile = 'tsconfig.json');
     const newTsconfig = getCurrentTsconfig(options);
-    delete newTsconfig.files;
-    let outputFile = path_1.resolve(options.cwd, options.outputFile);
-    fs_extra_1.outputJSONSync(outputFile, newTsconfig, {
+    let outputFile = (0, path_1.resolve)(options.cwd, options.outputFile);
+    try {
+        (0, fs_extra_1.copySync)(outputFile, outputFile + '.bak', {
+            preserveTimestamps: true,
+        });
+    }
+    catch (e) { }
+    (0, fs_extra_1.outputJSONSync)(outputFile, newTsconfig, {
         spaces: 2,
     });
     return outputFile;

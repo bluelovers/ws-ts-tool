@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import console from 'debug-color2/logger';
+import console2 from 'debug-color2/logger';
 import yargs from 'yargs';
-import { outputCurrentTsconfig } from '../index';
+import getCurrentTsconfig, { outputCurrentTsconfig } from '../index';
 
-let argv = yargs
+const argv = yargs
 	.option(`cwd`, {
 		alias: [
 			'c',
@@ -30,9 +30,25 @@ let argv = yargs
 		string: true,
 		normalize: true,
 	})
-	.argv
+	.option(`print`, {
+		alias: [
+			'p',
+		],
+		boolean: true,
+		default: true,
+	})
+	.parseSync()
 ;
 
-let file = outputCurrentTsconfig(argv);
+if (argv.print)
+{
+	let json = getCurrentTsconfig(argv);
 
-console.log(`create tsconfig file: ${file}`);
+	console.log(JSON.stringify(json, null, 2));
+}
+else
+{
+	let file = outputCurrentTsconfig(argv);
+
+	console2.success(`outpput tsconfig to file: ${file}`);
+}
