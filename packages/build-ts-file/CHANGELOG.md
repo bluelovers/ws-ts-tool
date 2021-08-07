@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.13](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@1.0.12...build-ts-file@1.0.13) (2021-08-07)
+
+**Note:** Version bump only for package build-ts-file
+
+
+
+
+
 ## [1.0.12](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@1.0.11...build-ts-file@1.0.12) (2020-07-19)
 
 **Note:** Version bump only for package build-ts-file
