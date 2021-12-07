@@ -4,15 +4,15 @@
 
 // @ts-ignore
 import * as ts from 'typescript';
-import crossSpawn from 'cross-spawn-extra';
-import ITsconfig from '@ts-type/package-dts/tsconfig-json';
+import { sync as crossSpawn } from 'cross-spawn-extra';
+import { ITsconfig } from '@ts-type/package-dts/tsconfig-json';
 import { dirname, resolve } from 'path';
 // @ts-ignore
 import unparse from 'yargs-unparser';
 // @ts-ignore
 import { JsxEmit, ModuleKind, ModuleResolutionKind, NewLineKind, ScriptTarget } from 'typescript';
 import valueFromRecord, { keyFromRecord } from 'value-from-record';
-import getCurrentTsconfig, { IOptions as IGetCurrentTsconfigOptions } from 'get-current-tsconfig';
+import { getCurrentTsconfig, IOptions as IGetCurrentTsconfigOptions } from 'get-current-tsconfig';
 import console from 'debug-color2/logger';
 
 export function tsconfigToCliArgs(compilerOptions: ITsconfig["compilerOptions"]): string[]
@@ -64,7 +64,7 @@ export function tsconfigToProgram(compilerOptions: ITsconfig["compilerOptions"])
 					break;
 				case 'moduleResolution':
 
-					if (value === 'node')
+					if (value === 'node' || value === 'nodenext')
 					{
 						value = ModuleResolutionKind.NodeJs
 					}
@@ -154,7 +154,7 @@ export function spawnEmitTsFiles(inputFiles: string | string[], options?: IOptio
 	//console.dir(cwd)
 	//console.dir(files)
 
-	let cp = crossSpawn.sync(bin, [
+	let cp = crossSpawn(bin, [
 		...args,
 		`--tsBuildInfoFile`,
 		`.`,

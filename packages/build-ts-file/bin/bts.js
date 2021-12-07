@@ -5,7 +5,7 @@ const tslib_1 = require("tslib");
 const yargs_1 = (0, tslib_1.__importDefault)(require("yargs"));
 const get_current_tsconfig_1 = (0, tslib_1.__importDefault)(require("get-current-tsconfig"));
 const bluebird_1 = (0, tslib_1.__importDefault)(require("@bluelovers/fast-glob/bluebird"));
-const index_1 = (0, tslib_1.__importDefault)(require("../index"));
+const index_1 = require("../index");
 const logger_1 = (0, tslib_1.__importDefault)(require("debug-color2/logger"));
 yargs_1.default
     .option(`cwd`, {
@@ -35,11 +35,13 @@ yargs_1.default
         'conf',
     ],
     handler(args) {
+        // @ts-ignore
         logger_1.default.dir((0, get_current_tsconfig_1.default)(args.cwd));
     },
 })
     .command({
     command: '$0',
+    // @ts-ignore
     handler(args) {
         if (!args._.length) {
             yargs_1.default.showHelp();
@@ -65,7 +67,7 @@ yargs_1.default
         })
             .mapSeries(file => {
             verbose && logger_1.default.debug(`emit:`, file);
-            let ret = (0, index_1.default)(file, {
+            let ret = (0, index_1.emitTsFiles)(file, {
                 cwd: args.cwd,
                 verbose,
             });

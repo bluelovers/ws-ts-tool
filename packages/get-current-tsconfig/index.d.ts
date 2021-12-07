@@ -1,4 +1,4 @@
-import ITsconfig from '@ts-type/package-dts/tsconfig-json';
+import { ITsconfig } from '@ts-type/package-dts/tsconfig-json';
 export interface IOptions {
     cwd?: string;
     bin?: string;

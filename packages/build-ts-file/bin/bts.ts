@@ -3,7 +3,7 @@
 import yargs from 'yargs';
 import getCurrentTsconfig from 'get-current-tsconfig';
 import FastGlob from '@bluelovers/fast-glob/bluebird';
-import emitTsFiles from '../index';
+import { emitTsFiles } from '../index';
 import { join } from 'path';
 import console from 'debug-color2/logger';
 
@@ -36,12 +36,14 @@ yargs
 		],
 		handler(args)
 		{
+			// @ts-ignore
 			console.dir(getCurrentTsconfig(args.cwd as string))
 		},
 	})
 	.command({
 		command: '$0',
-		handler(args)
+		// @ts-ignore
+		handler(args: any)
 		{
 			if (!args._.length)
 			{

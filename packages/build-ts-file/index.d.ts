@@ -2,7 +2,7 @@
  * Created by user on 2020/5/27.
  */
 import * as ts from 'typescript';
-import ITsconfig from '@ts-type/package-dts/tsconfig-json';
+import { ITsconfig } from '@ts-type/package-dts/tsconfig-json';
 import { IOptions as IGetCurrentTsconfigOptions } from 'get-current-tsconfig';
 export declare function tsconfigToCliArgs(compilerOptions: ITsconfig["compilerOptions"]): string[];
 export declare function tsconfigToProgram(compilerOptions: ITsconfig["compilerOptions"]): ts.CompilerOptions;
