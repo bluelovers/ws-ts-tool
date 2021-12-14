@@ -2,9 +2,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const logger_1 = (0, tslib_1.__importDefault)(require("debug-color2/logger"));
-const yargs_1 = (0, tslib_1.__importDefault)(require("yargs"));
-const index_1 = (0, tslib_1.__importStar)(require("../index"));
+const logger_1 = tslib_1.__importDefault(require("debug-color2/logger"));
+const yargs_1 = tslib_1.__importDefault(require("yargs"));
+const index_1 = tslib_1.__importStar(require("../index"));
 const argv = yargs_1.default
     .option(`cwd`, {
     alias: [
