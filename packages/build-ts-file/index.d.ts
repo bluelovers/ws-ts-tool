@@ -140,7 +140,7 @@ export declare function handleOptions(files: string | string[], options?: IOptio
         strictNullChecks?: boolean;
         maxNodeModuleJsDepth?: number;
         importHelpers?: boolean;
-        importsNotUsedAsValues?: "error" | "preserve" | "remove";
+        importsNotUsedAsValues?: "error" | "remove" | "preserve";
         alwaysStrict?: boolean;
         strict?: boolean;
         strictBindCallApply?: boolean;
