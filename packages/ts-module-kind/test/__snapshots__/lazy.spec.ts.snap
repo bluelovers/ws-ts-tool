@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModuleKind 0 1`] = `
+Object {
+  "actual": undefined,
+  "input": "0",
+  "module": 0,
+  "moduleName": "None",
+}
+`;
+
+exports[`ModuleKind 1 1`] = `
+Object {
+  "actual": "cjs",
+  "input": "1",
+  "module": 1,
+  "moduleName": "CommonJS",
+}
+`;
+
+exports[`ModuleKind 2 1`] = `
+Object {
+  "actual": undefined,
+  "input": "2",
+  "module": 2,
+  "moduleName": "AMD",
+}
+`;
+
+exports[`ModuleKind 3 1`] = `
+Object {
+  "actual": undefined,
+  "input": "3",
+  "module": 3,
+  "moduleName": "UMD",
+}
+`;
+
+exports[`ModuleKind 4 1`] = `
+Object {
+  "actual": undefined,
+  "input": "4",
+  "module": 4,
+  "moduleName": "System",
+}
+`;
+
+exports[`ModuleKind 5 1`] = `
+Object {
+  "actual": "esm",
+  "input": "5",
+  "module": 5,
+  "moduleName": "ES2015",
+}
+`;
+
+exports[`ModuleKind 6 1`] = `
+Object {
+  "actual": "esm",
+  "input": "6",
+  "module": 6,
+  "moduleName": "ES2020",
+}
+`;
+
+exports[`ModuleKind 7 1`] = `
+Object {
+  "actual": "esm",
+  "input": "7",
+  "module": 7,
+  "moduleName": "ES2022",
+}
+`;
+
+exports[`ModuleKind 99 1`] = `
+Object {
+  "actual": "esm",
+  "input": "99",
+  "module": 99,
+  "moduleName": "ESNext",
+}
+`;
+
+exports[`ModuleKind 100 1`] = `
+Object {
+  "actual": "cjs",
+  "input": "100",
+  "module": 100,
+  "moduleName": "Node12",
+}
+`;
+
+exports[`ModuleKind 199 1`] = `
+Object {
+  "actual": "esm",
+  "input": "199",
+  "module": 199,
+  "moduleName": "NodeNext",
+}
+`;
+
+exports[`ModuleKind AMD 1`] = `
+Object {
+  "actual": undefined,
+  "input": "AMD",
+  "module": 2,
+  "moduleName": "AMD",
+}
+`;
+
+exports[`ModuleKind CommonJS 1`] = `
+Object {
+  "actual": "cjs",
+  "input": "CommonJS",
+  "module": 1,
+  "moduleName": "CommonJS",
+}
+`;
+
+exports[`ModuleKind ES2015 1`] = `
+Object {
+  "actual": "esm",
+  "input": "ES2015",
+  "module": 5,
+  "moduleName": "ES2015",
+}
+`;
+
+exports[`ModuleKind ES2020 1`] = `
+Object {
+  "actual": "esm",
+  "input": "ES2020",
+  "module": 6,
+  "moduleName": "ES2020",
+}
+`;
+
+exports[`ModuleKind ES2022 1`] = `
+Object {
+  "actual": "esm",
+  "input": "ES2022",
+  "module": 7,
+  "moduleName": "ES2022",
+}
+`;
+
+exports[`ModuleKind ESNext 1`] = `
+Object {
+  "actual": "esm",
+  "input": "ESNext",
+  "module": 99,
+  "moduleName": "ESNext",
+}
+`;
+
+exports[`ModuleKind Node12 1`] = `
+Object {
+  "actual": "cjs",
+  "input": "Node12",
+  "module": 100,
+  "moduleName": "Node12",
+}
+`;
+
+exports[`ModuleKind NodeNext 1`] = `
+Object {
+  "actual": "esm",
+  "input": "NodeNext",
+  "module": 199,
+  "moduleName": "NodeNext",
+}
+`;
+
+exports[`ModuleKind None 1`] = `
+Object {
+  "actual": undefined,
+  "input": "None",
+  "module": 0,
+  "moduleName": "None",
+}
+`;
+
+exports[`ModuleKind System 1`] = `
+Object {
+  "actual": undefined,
+  "input": "System",
+  "module": 4,
+  "moduleName": "System",
+}
+`;
+
+exports[`ModuleKind UMD 1`] = `
+Object {
+  "actual": undefined,
+  "input": "UMD",
+  "module": 3,
+  "moduleName": "UMD",
+}
+`;

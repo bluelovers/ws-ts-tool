@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "module": "node12",
+    "noEmit": true,
+    "declaration": false,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false
+  }
+}
