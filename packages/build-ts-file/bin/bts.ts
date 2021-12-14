@@ -4,7 +4,6 @@ import yargs from 'yargs';
 import getCurrentTsconfig from 'get-current-tsconfig';
 import FastGlob from '@bluelovers/fast-glob/bluebird';
 import { emitTsFiles } from '../index';
-import { join } from 'path';
 import console from 'debug-color2/logger';
 
 yargs
@@ -28,6 +27,31 @@ yargs
 		boolean: true,
 		default: true,
 	})
+	.option(`project`, {
+		desc: `Compile the project given the path to its configuration file, or to a folder with a 'tsconfig.json'.`,
+		alias: [
+			'p',
+		],
+		normalize: true,
+	})
+	.option(`module`, {
+		desc: `Specify what module code is generated.`,
+		alias: [
+			'm',
+		],
+		string: true,
+	})
+	.option(`declaration`, {
+		desc: `Generate .d.ts files from TypeScript and JavaScript files in your project.`,
+		alias: [
+			'd',
+		],
+		boolean: true,
+	})
+	.option(`emitDeclarationOnly`, {
+		desc: `Only output d.ts files and not JavaScript files.`,
+		boolean: true,
+	})
 	.command({
 		command: 'tsconfig',
 		aliases: [
@@ -36,8 +60,20 @@ yargs
 		],
 		handler(args)
 		{
-			// @ts-ignore
-			console.dir(getCurrentTsconfig(args.cwd as string))
+			console.dir(getCurrentTsconfig({
+				// @ts-ignore
+				cwd: args.cwd as any,
+				// @ts-ignore
+				sourceFile: args.project as any,
+				extraArgv: [
+					// @ts-ignore
+					args.module?.length && `-m ${args.module}`,
+					// @ts-ignore
+					args.declaration?.length && `--declaration`,
+					// @ts-ignore
+					args.emitDeclarationOnly?.length && `--emitDeclarationOnly`,
+				].filter(v => v?.length)
+			}))
 		},
 	})
 	.command({
@@ -59,6 +95,21 @@ yargs
 			// @ts-ignore
 			let cwd: string = args.cwd || process.cwd();
 
+			let getCurrentTsconfigOptions = {
+				// @ts-ignore
+				cwd: args.cwd as any,
+				// @ts-ignore
+				sourceFile: args.project as any,
+				extraArgv: [
+					// @ts-ignore
+					args.module?.length && `-m ${args.module}`,
+					// @ts-ignore
+					args.declaration?.length && `--declaration`,
+					// @ts-ignore
+					args.emitDeclarationOnly?.length && `--emitDeclarationOnly`,
+				].filter(v => v?.length)
+			}
+
 			return FastGlob
 				.async<string>([
 					...args._,
@@ -67,7 +118,8 @@ yargs
 					ignore,
 					absolute: true,
 				})
-				.tap(result => {
+				.tap(result =>
+				{
 
 					if (!result.length)
 					{
@@ -75,13 +127,15 @@ yargs
 					}
 
 				})
-				.mapSeries(file => {
+				.mapSeries(file =>
+				{
 
 					verbose && console.debug(`emit:`, file)
 
 					let ret = emitTsFiles(file as any, {
 						cwd: args.cwd as string,
 						verbose,
+						getCurrentTsconfigOptions,
 					});
 
 					if (ret.exitCode)

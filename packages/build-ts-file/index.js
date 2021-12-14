@@ -6,14 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.emitTsFiles = exports.spawnEmitTsFiles = exports.handleOptions = exports.tsconfigToProgram = exports.tsconfigToCliArgs = void 0;
 const tslib_1 = require("tslib");
 // @ts-ignore
-const ts = (0, tslib_1.__importStar)(require("typescript"));
+const ts = tslib_1.__importStar(require("typescript"));
 const cross_spawn_extra_1 = require("cross-spawn-extra");
 const path_1 = require("path");
 // @ts-ignore
 const typescript_1 = require("typescript");
-const value_from_record_1 = (0, tslib_1.__importDefault)(require("value-from-record"));
+const value_from_record_1 = tslib_1.__importDefault(require("value-from-record"));
 const get_current_tsconfig_1 = require("get-current-tsconfig");
-const logger_1 = (0, tslib_1.__importDefault)(require("debug-color2/logger"));
+const logger_1 = tslib_1.__importDefault(require("debug-color2/logger"));
 function tsconfigToCliArgs(compilerOptions) {
     let args = Object.entries(compilerOptions)
         .reduce((a, [key, value]) => {
@@ -120,7 +120,7 @@ function spawnEmitTsFiles(inputFiles, options) {
 }
 exports.spawnEmitTsFiles = spawnEmitTsFiles;
 function emitTsFiles(files, options) {
-    var _a;
+    var _a, _b;
     let cwd = options === null || options === void 0 ? void 0 : options.cwd;
     if (!Array.isArray(files)) {
         files = [files];
@@ -129,7 +129,11 @@ function emitTsFiles(files, options) {
         cwd = (0, path_1.dirname)((0, path_1.resolve)(process.cwd(), files[0]));
     }
     files = files.map(file => (0, path_1.resolve)(cwd, file));
-    let compilerOptions = tsconfigToProgram((_a = options === null || options === void 0 ? void 0 : options.compilerOptions) !== null && _a !== void 0 ? _a : (0, get_current_tsconfig_1.getCurrentTsconfig)(cwd).compilerOptions);
+    let getCurrentTsconfigOptions = (_a = options === null || options === void 0 ? void 0 : options.getCurrentTsconfigOptions) !== null && _a !== void 0 ? _a : {};
+    let compilerOptions = tsconfigToProgram((_b = options === null || options === void 0 ? void 0 : options.compilerOptions) !== null && _b !== void 0 ? _b : (0, get_current_tsconfig_1.getCurrentTsconfig)({
+        ...getCurrentTsconfigOptions,
+        cwd,
+    }).compilerOptions);
     const program = ts.createProgram(files, compilerOptions);
     const emitResult = program.emit();
     const exitCode = emitResult.emitSkipped ? 1 : 0;

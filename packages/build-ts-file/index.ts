@@ -111,6 +111,7 @@ export interface IOptions
 	cwd?: string;
 	compilerOptions?: ITsconfig["compilerOptions"];
 	getCurrentTsconfigOptions?: IGetCurrentTsconfigOptions;
+	verbose?: boolean,
 }
 
 export function handleOptions(files: string | string[], options?: IOptions)
@@ -165,11 +166,7 @@ export function spawnEmitTsFiles(inputFiles: string | string[], options?: IOptio
 	})
 }
 
-export function emitTsFiles(files: string | string[], options?: {
-	cwd?: string,
-	compilerOptions?: ITsconfig["compilerOptions"],
-	verbose?: boolean,
-})
+export function emitTsFiles(files: string | string[], options?: IOptions)
 {
 	let cwd = options?.cwd;
 
@@ -183,9 +180,14 @@ export function emitTsFiles(files: string | string[], options?: {
 		cwd = dirname(resolve(process.cwd(), files[0]))
 	}
 
-	files = files.map(file => resolve(cwd, file))
+	files = files.map(file => resolve(cwd, file));
 
-	let compilerOptions = tsconfigToProgram(options?.compilerOptions ?? getCurrentTsconfig(cwd).compilerOptions);
+	let getCurrentTsconfigOptions = options?.getCurrentTsconfigOptions ?? {};
+
+	let compilerOptions = tsconfigToProgram(options?.compilerOptions ?? getCurrentTsconfig({
+		...getCurrentTsconfigOptions,
+		cwd,
+	}).compilerOptions);
 
 	const program = ts.createProgram(files, compilerOptions as any);
 	const emitResult = program.emit();

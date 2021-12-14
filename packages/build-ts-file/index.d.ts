@@ -11,6 +11,7 @@ export interface IOptions {
     cwd?: string;
     compilerOptions?: ITsconfig["compilerOptions"];
     getCurrentTsconfigOptions?: IGetCurrentTsconfigOptions;
+    verbose?: boolean;
 }
 export declare function handleOptions(files: string | string[], options?: IOptions): {
     files: string[];
@@ -39,7 +40,7 @@ export declare function handleOptions(files: string | string[], options?: IOptio
         jsxImportSource?: string;
         listFiles?: boolean;
         mapRoot?: string;
-        module?: ("CommonJS" | "AMD" | "System" | "UMD" | "ES6" | "ES2015" | "ES2020" | "ESNext" | "None" | {
+        module?: ("CommonJS" | "AMD" | "System" | "UMD" | "ES6" | "ES2015" | "ES2020" | "ESNext" | "None" | "es2022" | "node12" | "nodenext" | {
             [k: string]: unknown;
         }) & string;
         moduleResolution?: ("Classic" | "Node" | {
@@ -64,6 +65,7 @@ export declare function handleOptions(files: string | string[], options?: IOptio
         outDir?: string;
         preserveConstEnums?: boolean;
         preserveSymlinks?: boolean;
+        preserveValueImports?: boolean;
         preserveWatchOutput?: boolean;
         pretty?: boolean;
         removeComments?: boolean;
@@ -110,7 +112,7 @@ export declare function handleOptions(files: string | string[], options?: IOptio
         noImplicitUseStrict?: boolean;
         listEmittedFiles?: boolean;
         disableSizeLimit?: boolean;
-        lib?: (("ES6" | "ES2015" | "ES2020" | "ESNext" | "ES5" | "ES2016" | "ES2017" | "ES2018" | "ES2019" | "ES2021" | "ES2015.Collection" | "ES2015.Core" | "ES2015.Generator" | "ES2015.Iterable" | "ES2015.Promise" | "ES2015.Proxy" | "ES2015.Reflect" | "ES2015.Symbol.WellKnown" | "ES2015.Symbol" | "ES2016.Array.Include" | "ES2017.Intl" | "ES2017.Object" | "ES2017.SharedMemory" | "ES2017.String" | "ES2017.TypedArrays" | "ES2018.AsyncGenerator" | "ES2018.AsyncIterable" | "ES2018.Intl" | "ES2018.Promise" | "ES2018.Regexp" | "ES2019.Array" | "ES2019.Object" | "ES2019.String" | "ES2019.Symbol" | "ES2020.BigInt" | "ES2020.Promise" | "ES2020.String" | "ES2020.Symbol.WellKnown" | "ESNext.Array" | "ESNext.AsyncIterable" | "ESNext.BigInt" | "ESNext.Intl" | "ESNext.Promise" | "ESNext.String" | "ESNext.Symbol" | "DOM" | "DOM.Iterable" | "ScriptHost" | "WebWorker" | "WebWorker.ImportScripts" | "Webworker.Iterable" | "ES7" | "ES2020.SharedMemory" | "ES2020.Intl" | "ES2021.Promise" | "ES2021.String" | "ES2021.WeakRef" | "ESNext.WeakRef" | {
+        lib?: (("ES6" | "ES2015" | "ES2020" | "ESNext" | "ES5" | "ES2016" | "ES2017" | "ES2018" | "ES2019" | "ES2021" | "ES2015.Collection" | "ES2015.Core" | "ES2015.Generator" | "ES2015.Iterable" | "ES2015.Promise" | "ES2015.Proxy" | "ES2015.Reflect" | "ES2015.Symbol.WellKnown" | "ES2015.Symbol" | "ES2016.Array.Include" | "ES2017.Intl" | "ES2017.Object" | "ES2017.SharedMemory" | "ES2017.String" | "ES2017.TypedArrays" | "ES2018.AsyncGenerator" | "ES2018.AsyncIterable" | "ES2018.Intl" | "ES2018.Promise" | "ES2018.Regexp" | "ES2019.Array" | "ES2019.Object" | "ES2019.String" | "ES2019.Symbol" | "ES2020.BigInt" | "ES2020.Promise" | "ES2020.String" | "ES2020.Symbol.WellKnown" | "ESNext.Array" | "ESNext.AsyncIterable" | "ESNext.BigInt" | "ESNext.Intl" | "ESNext.Promise" | "ESNext.String" | "ESNext.Symbol" | "DOM" | "DOM.Iterable" | "ScriptHost" | "WebWorker" | "WebWorker.ImportScripts" | "Webworker.Iterable" | "ES7" | "ES2020.SharedMemory" | "ES2020.Intl" | "ES2021.Promise" | "ES2021.String" | "ES2021.WeakRef" | "ESNext.WeakRef" | "es2021.intl" | {
             [k: string]: unknown;
         } | {
             [k: string]: unknown;
@@ -138,7 +140,7 @@ export declare function handleOptions(files: string | string[], options?: IOptio
         strictNullChecks?: boolean;
         maxNodeModuleJsDepth?: number;
         importHelpers?: boolean;
-        importsNotUsedAsValues?: "preserve" | "remove" | "error";
+        importsNotUsedAsValues?: "error" | "preserve" | "remove";
         alwaysStrict?: boolean;
         strict?: boolean;
         strictBindCallApply?: boolean;
@@ -160,11 +162,7 @@ export declare function handleOptions(files: string | string[], options?: IOptio
     };
 };
 export declare function spawnEmitTsFiles(inputFiles: string | string[], options?: IOptions): void;
-export declare function emitTsFiles(files: string | string[], options?: {
-    cwd?: string;
-    compilerOptions?: ITsconfig["compilerOptions"];
-    verbose?: boolean;
-}): {
+export declare function emitTsFiles(files: string | string[], options?: IOptions): {
     cwd: string;
     files: string[];
     exitCode: number;
