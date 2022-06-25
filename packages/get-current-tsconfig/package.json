@@ -1,6 +1,6 @@
 {
   "name": "get-current-tsconfig",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "",
   "keywords": [
     "create-by-yarn-tool",
@@ -82,6 +82,5 @@
     "tslib": "^2",
     "yargs": "^17.5.1"
   },
-  "peerDependencies": {},
   "packageManager": "yarn@^1.22.11"
 }

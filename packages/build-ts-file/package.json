@@ -1,6 +1,6 @@
 {
   "name": "build-ts-file",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "",
   "keywords": [
     "create-by-yarn-tool",
@@ -83,11 +83,10 @@
     "@ts-type/package-dts": "^1.0.60",
     "cross-spawn-extra": "^2.1.0",
     "debug-color2": "^1.2.7",
-    "get-current-tsconfig": "^1.0.8",
+    "get-current-tsconfig": "^1.0.9",
     "tslib": "^2",
     "value-from-record": "^3.0.1",
     "yargs": "^17.5.1"
   },
-  "peerDependencies": {},
   "packageManager": "yarn@^1.22.11"
 }

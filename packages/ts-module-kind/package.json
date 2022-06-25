@@ -1,6 +1,6 @@
 {
   "name": "ts-module-kind",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "keywords": [
     "create-by-yarn-tool",
@@ -72,7 +72,5 @@
   "dependencies": {
     "value-from-record": "^3.0.1"
   },
-  "devDependencies": {},
-  "peerDependencies": {},
   "packageManager": "yarn@^1.22.11"
 }
