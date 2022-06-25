@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import console2 from 'debug-color2/logger';
+import { consoleLogger as console2 } from 'debug-color2/logger';
 import yargs from 'yargs';
-import getCurrentTsconfig, { outputCurrentTsconfig } from '../index';
+import { getCurrentTsconfig, outputCurrentTsconfig } from '../';
 
 const argv = yargs
 	.option(`cwd`, {

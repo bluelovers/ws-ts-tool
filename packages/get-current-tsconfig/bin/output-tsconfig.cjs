@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const logger_1 = tslib_1.__importDefault(require("debug-color2/logger"));
-const yargs_1 = tslib_1.__importDefault(require("yargs"));
-const index_1 = tslib_1.__importStar(require("../index"));
+const logger_1 = require("debug-color2/logger");
+const yargs_1 = __importDefault(require("yargs"));
+const __1 = require("../");
 const argv = yargs_1.default
     .option(`cwd`, {
     alias: [
@@ -40,11 +42,11 @@ const argv = yargs_1.default
 })
     .parseSync();
 if (argv.print) {
-    let json = (0, index_1.default)(argv);
+    let json = (0, __1.getCurrentTsconfig)(argv);
     console.log(JSON.stringify(json, null, 2));
 }
 else {
-    let file = (0, index_1.outputCurrentTsconfig)(argv);
-    logger_1.default.success(`outpput tsconfig to file: ${file}`);
+    let file = (0, __1.outputCurrentTsconfig)(argv);
+    logger_1.consoleLogger.success(`outpput tsconfig to file: ${file}`);
 }
-//# sourceMappingURL=output-tsconfig.js.map
+//# sourceMappingURL=output-tsconfig.cjs.map

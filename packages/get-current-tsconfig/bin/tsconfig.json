@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "noEmit": false,
+    "declaration": false,
+    "noUnusedParameters": false,
+    "allowUnusedLabels": true,
+    "noUnusedLocals": false,
+    "noPropertyAccessFromIndexSignature": false
+  }
+}

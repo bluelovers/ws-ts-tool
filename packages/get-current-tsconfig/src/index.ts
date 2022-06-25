@@ -1,6 +1,6 @@
 import { ITsconfig } from '@ts-type/package-dts/tsconfig-json';
 import { sync as crossSpawnSync } from 'cross-spawn-extra';
-import { readJSONSync, outputJSONSync, copySync } from 'fs-extra';
+import { outputJSONSync, copySync } from 'fs-extra';
 import { resolve } from 'path';
 
 export interface IOptions
