@@ -79,7 +79,7 @@
     "cross-spawn-extra": "^2.1.0",
     "debug-color2": "^1.2.7",
     "fs-extra": "^10.1.0",
-    "tslib": "^2.4.0",
+    "tslib": "^2",
     "yargs": "^17.5.1"
   },
   "peerDependencies": {},
