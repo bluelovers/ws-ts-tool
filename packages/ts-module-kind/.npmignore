@@ -35,6 +35,13 @@ node_modules
 /bin/**/*.d.cts
 /bin/*.d.cts
 
+/src/**/*.d.ts
+/src/**/*.js
+/src/**/*.d.cts
+/src/**/*.d.mts
+/src/**/*.cjs
+/src/**/*.mjs
+
 *.tgz
 /tsconfig.json.tpl
 yarn-error.log
@@ -114,9 +121,4 @@ cz-adapter
 tsc-multi.json.tpl
 tsc-multi.json
 
-/src/**/*.d.ts
-/src/**/*.js
-/src/**/*.d.cts
-/src/**/*.d.mts
-/src/**/*.cjs
-/src/**/*.mjs
+changelog-option.js

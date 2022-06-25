@@ -86,7 +86,7 @@ Object {
   "actual": "cjs",
   "input": "100",
   "module": 100,
-  "moduleName": "Node12",
+  "moduleName": "Node16",
 }
 `;
 
@@ -153,12 +153,12 @@ Object {
 }
 `;
 
-exports[`ModuleKind Node12 1`] = `
+exports[`ModuleKind Node16 1`] = `
 Object {
   "actual": "cjs",
-  "input": "Node12",
+  "input": "Node16",
   "module": 100,
-  "moduleName": "Node12",
+  "moduleName": "Node16",
 }
 `;
 

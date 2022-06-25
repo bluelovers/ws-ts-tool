@@ -1,76 +1,56 @@
-import { ModuleKind } from 'typescript';
-import { strictEqual } from 'assert';
-import { valueFromRecord } from 'value-from-record';
+import { ModuleKind as s } from "typescript";
 
-const TS_MODULE_KIND_IS_CJS = [1, 100];
-const TS_MODULE_KIND_IS_ESM = [5, 6, 7, 99, 199];
+import { strictEqual as n } from "assert";
 
-var EnumJsKind;
+import { valueFromRecord as e } from "value-from-record";
 
-(function (EnumJsKind) {
-  EnumJsKind["cjs"] = "cjs";
-  EnumJsKind["esm"] = "esm";
-})(EnumJsKind || (EnumJsKind = {}));
-function tsModuleKindIsCJS(module) {
-  strictEqual(typeof module, 'number');
-  return TS_MODULE_KIND_IS_CJS.indexOf(module) !== -1;
-}
-function tsModuleKindIsESM(module) {
-  strictEqual(typeof module, 'number');
-  return TS_MODULE_KIND_IS_ESM.indexOf(module) !== -1;
-}
-function handleModuleKindLazy(module) {
-  if (typeof module === 'string') {
-    if (/^\d+$/.test(module)) {
-      module = parseInt(module);
-    } else {
-      module = valueFromRecord(module, ModuleKind);
-    }
-  }
+const t = [ 1, 100 ], d = [ 5, 6, 7, 99, 199 ];
 
-  return module;
-}
-function tsModuleKindIsCJSLazy(module) {
-  return tsModuleKindIsCJS(handleModuleKindLazy(module));
-}
-function tsModuleKindIsESMLazy(module) {
-  return tsModuleKindIsESM(handleModuleKindLazy(module));
-}
-function tsModuleKind(module) {
-  if (tsModuleKindIsCJS(module)) {
-    return "cjs";
-  } else if (tsModuleKindIsESM(module)) {
-    return "esm";
-  }
-}
-function tsModuleKindLazy(module) {
-  return tsModuleKind(handleModuleKindLazy(module));
-}
-function getExtensionsByCompilerOptions(options) {
-  const tsExtensions = ['.ts'];
-  const jsExtensions = [];
-  const module = handleModuleKindLazy(options.module);
-  const useESM = tsModuleKindIsESM(module);
-  const useCJS = tsModuleKindIsCJS(module);
-  if (options.jsx) tsExtensions.push('.tsx');
-  if (useESM) tsExtensions.push('.mts');
-  if (useCJS) tsExtensions.push('.cts');
+var o;
 
-  if (options.allowJs) {
-    jsExtensions.push('.js');
-    if (options.jsx) jsExtensions.push('.jsx');
-    if (useESM) tsExtensions.push('.mjs');
-    if (useCJS) tsExtensions.push('.cjs');
-  }
+function tsModuleKindIsCJS(s) {
+  return n(typeof s, "number"), -1 !== t.indexOf(s);
+}
 
-  return {
-    tsExtensions,
-    jsExtensions,
-    useESM,
-    useCJS,
-    module
+function tsModuleKindIsESM(s) {
+  return n(typeof s, "number"), -1 !== d.indexOf(s);
+}
+
+function handleModuleKindLazy(n) {
+  return "string" == typeof n && (n = /^\d+$/.test(n) ? parseInt(n) : e(n, s)), n;
+}
+
+function tsModuleKindIsCJSLazy(s) {
+  return tsModuleKindIsCJS(handleModuleKindLazy(s));
+}
+
+function tsModuleKindIsESMLazy(s) {
+  return tsModuleKindIsESM(handleModuleKindLazy(s));
+}
+
+function tsModuleKind(s) {
+  return tsModuleKindIsCJS(s) ? "cjs" : tsModuleKindIsESM(s) ? "esm" : void 0;
+}
+
+function tsModuleKindLazy(s) {
+  return tsModuleKind(handleModuleKindLazy(s));
+}
+
+function getExtensionsByCompilerOptions(s) {
+  const n = [ ".ts" ], e = [], t = handleModuleKindLazy(s.module), d = tsModuleKindIsESM(t), o = tsModuleKindIsCJS(t);
+  return s.jsx && n.push(".tsx"), d && n.push(".mts"), o && n.push(".cts"), s.allowJs && (e.push(".js"), 
+  s.jsx && e.push(".jsx"), d && n.push(".mjs"), o && n.push(".cjs")), {
+    tsExtensions: n,
+    jsExtensions: e,
+    useESM: d,
+    useCJS: o,
+    module: t
   };
 }
 
-export { EnumJsKind, TS_MODULE_KIND_IS_CJS, TS_MODULE_KIND_IS_ESM, getExtensionsByCompilerOptions as default, getExtensionsByCompilerOptions, handleModuleKindLazy, tsModuleKind, tsModuleKindIsCJS, tsModuleKindIsCJSLazy, tsModuleKindIsESM, tsModuleKindIsESMLazy, tsModuleKindLazy };
+!function(s) {
+  s.cjs = "cjs", s.esm = "esm";
+}(o || (o = {}));
+
+export { o as EnumJsKind, t as TS_MODULE_KIND_IS_CJS, d as TS_MODULE_KIND_IS_ESM, getExtensionsByCompilerOptions as default, getExtensionsByCompilerOptions, handleModuleKindLazy, tsModuleKind, tsModuleKindIsCJS, tsModuleKindIsCJSLazy, tsModuleKindIsESM, tsModuleKindIsESMLazy, tsModuleKindLazy };
 //# sourceMappingURL=index.esm.mjs.map

@@ -1,10 +1,10 @@
 import { ITSAndTypeAndStringLiteral } from 'ts-type/lib/helper/string';
 import { CompilerOptions, ModuleKind } from 'typescript';
 
-export declare type ITsModuleKindIsCJS = ModuleKind.CommonJS | ModuleKind.Node12;
+export declare type ITsModuleKindIsCJS = ModuleKind.CommonJS | ModuleKind.Node16;
 export declare const TS_MODULE_KIND_IS_CJS: readonly [
 	ModuleKind.CommonJS,
-	ModuleKind.Node12
+	ModuleKind.Node16
 ];
 export declare type ITsModuleKindIsESM = ModuleKind.ES2015 | ModuleKind.ES2020 | ModuleKind.ES2022 | ModuleKind.ESNext | ModuleKind.NodeNext;
 export declare const TS_MODULE_KIND_IS_ESM: readonly [
