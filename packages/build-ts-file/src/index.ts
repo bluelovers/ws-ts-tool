@@ -3,107 +3,16 @@
  */
 
 // @ts-ignore
-import ts from 'typescript';
+import { JsxEmit, ModuleKind, ModuleResolutionKind, NewLineKind, ScriptTarget, createProgram, getPreEmitDiagnostics,
+	flattenDiagnosticMessageText } from 'typescript';
 import { sync as crossSpawn } from 'cross-spawn-extra';
 import { ITsconfig } from '@ts-type/package-dts/tsconfig-json';
 import { dirname, resolve } from 'path';
 // @ts-ignore
 import unparse from 'yargs-unparser';
-// @ts-ignore
-import { JsxEmit, ModuleKind, ModuleResolutionKind, NewLineKind, ScriptTarget } from 'typescript';
-import { valueFromRecord } from 'value-from-record';
 import { getCurrentTsconfig, IOptions as IGetCurrentTsconfigOptions } from 'get-current-tsconfig';
 import { consoleLogger as console } from 'debug-color2/logger';
-
-export function tsconfigToCliArgs(compilerOptions: ITsconfig["compilerOptions"]): string[]
-{
-	let args = Object.entries(compilerOptions)
-		.reduce((a, [key, value]) =>
-		{
-
-			if (key === 'locale')
-			{
-				return a
-			}
-
-			if (typeof value === 'boolean')
-			{
-				if (value === true)
-				{
-					a.push(`--${key}`);
-				}
-			}
-			else
-			{
-				a.push(`--${key}`);
-				a.push(value);
-			}
-
-			return a
-		}, [])
-	;
-
-	return args;
-	//return unparse(compilerOptions)
-}
-
-export function tsconfigToProgram(compilerOptions: ITsconfig["compilerOptions"])
-{
-	return Object.entries(compilerOptions)
-		.reduce((a, [key, value]) =>
-		{
-			let _skip = false;
-
-			switch (key as keyof ITsconfig["compilerOptions"])
-			{
-				case 'jsx':
-					value = valueFromRecord<string>(value, JsxEmit) ?? value
-					break;
-				case 'module':
-					value = valueFromRecord<string>(value, ModuleKind) ?? value
-					break;
-				case 'moduleResolution':
-
-					if (value === 'node' || value === 'nodenext')
-					{
-						value = ModuleResolutionKind.NodeJs
-					}
-					else
-					{
-						_skip = true;
-					}
-
-					break;
-				case 'newLine':
-
-					if ((value as string)?.toLowerCase?.() === 'lf')
-					{
-						value = NewLineKind.LineFeed
-						//value = valueFromRecord(value, NewLineKind)
-					}
-					else
-					{
-						_skip = true;
-					}
-
-					break;
-				case 'target':
-					value = valueFromRecord<string>(value, ScriptTarget) ?? value;
-					break;
-				case 'incremental':
-					_skip = true;
-					break;
-			}
-
-			if (!_skip)
-			{
-				// @ts-ignore
-				a[key] = value;
-			}
-
-			return a
-		}, {} as ts.CompilerOptions)
-}
+import { tsconfigToCliArgs, tsconfigToProgram } from '@ts-type/tsconfig-to-program';
 
 export interface IOptions
 {
@@ -196,7 +105,7 @@ export function emitTsFiles(files: string | string[], options?: IOptions)
 		cwd,
 	}).compilerOptions);
 
-	const program = ts.createProgram(files, compilerOptions as any);
+	const program = createProgram(files, compilerOptions as any);
 	const emitResult = program.emit();
 
 	const exitCode = emitResult.emitSkipped ? 1 : 0;
@@ -210,27 +119,25 @@ export function emitTsFiles(files: string | string[], options?: IOptions)
 
 	if (options?.verbose)
 	{
-		const allDiagnostics = ts
-			.getPreEmitDiagnostics(program)
+		const allDiagnostics = getPreEmitDiagnostics(program)
 			.concat(emitResult.diagnostics)
 		;
 
 		allDiagnostics.forEach(diagnostic =>
 		{
+			let message = flattenDiagnosticMessageText(diagnostic.messageText, "\n");
+
 			if (diagnostic.file)
 			{
 				const { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
-				const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
-				print.info(`[Diagnostic]`, `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
+
+				message = `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`
 			}
-			else
-			{
-				print.info(`[Diagnostic]`, ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
-			}
+
+			print.info(`[Diagnostic]`, message);
 		});
 
 		print.debug(`[CWD] ${cwd}`);
-
 
 	}
 

@@ -1,12 +1,12 @@
 {
-  "name": "build-ts-file",
-  "version": "1.0.15",
+  "name": "@ts-type/tsconfig-to-program",
+  "version": "1.0.0",
   "description": "",
   "keywords": [
     "create-by-yarn-tool",
     "create-by-tsdx"
   ],
-  "homepage": "https://github.com/bluelovers/ws-ts-tool/tree/master/packages/build-ts-file#readme",
+  "homepage": "https://github.com/bluelovers/ws-ts-tool/tree/master/packages/@ts-type/tsconfig-to-program#readme",
   "bugs": {
     "url": "https://github.com/bluelovers/ws-ts-tool/issues"
   },
@@ -31,63 +31,54 @@
   "module": "dist/index.esm.mjs",
   "types": "dist/index.d.ts",
   "typings": "dist/index.d.ts",
-  "bin": {
-    "bts": "bin/bts.cjs",
-    "build-ts-file": "bin/bts.cjs"
-  },
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
-    "coverage": "npx nyc yarn run test",
-    "lint": "npx eslint **/*.ts",
+    "review": "yarn run review:coverage",
+    "review:coverage": "yarn run lint && yarn run coverage",
+    "review:test": "yarn run lint && yarn run test",
+    "coverage": "yarn run test -- --coverage",
+    "lint": "yarn run lint:eslint",
+    "lint:eslint": "ynpx eslint --ext .ts,.tsx,.mts,.cts ./",
     "pretest": "echo pretest",
-    "test": "echo \"Error: no test specified\"",
-    "test:jest": "jest --coverage",
-    "test:mocha": "npx mocha --require ts-node/register \"!(node_modules)/**/*.{test,spec}.{ts,tsx}\"",
+    "test": "jest --passWithNoTests",
+    "test:jest": "jest --passWithNoTests",
+    "test:mocha": "ynpx --quiet -p ts-node -p mocha mocha -- --require ts-node/register \"!(node_modules)/**/*.{test,spec}.{ts,tsx}\"",
+    "test:tsdx": "ynpx @bluelovers/tsdx test --passWithNoTests",
     "posttest": "yarn run build",
-    "build": "yarn run build:tsdx && yarn run build:dts:tsc",
+    "build": "yarn run build:tsdx && yarn run build:dts:bundle",
     "build:dts:bundle": "ynpx dts-bundle-generator -o ./dist/index.d.ts ./src/index.ts --no-banner --inline-declare-global & echo build:dts:bundle",
     "build:dts:copy": "copy .\\src\\index.d.ts .\\dist\\index.d.ts & echo build:dts",
     "build:dts:tsc": "yarn run build:dts:tsc:emit && yarn run build:dts:copy",
-    "build:dts:tsc:emit": "tsc --emitDeclarationOnly --declaration --noEmit false --skipLibCheck & echo build:dts:tsc:emit",
-
+    "build:dts:tsc:emit": "tsc --emitDeclarationOnly --declaration --noEmit false",
+    "build:microbundle": "ynpx microbundle --target node",
     "build:tsdx": "ynpx @bluelovers/tsdx build --target node --name index",
     "ci:install": "echo ci:install",
     "ci:build": "echo ci:build",
-    "npm:publish": "npm publish",
-    "npm:publish:lerna": "lerna publish --yes",
     "preversion": "echo preversion && yarn run test",
     "version": "echo version",
     "postversion": "echo postversion",
     "prepublish": "echo prepublish",
-    "prepublish:lockfile": "npx sync-lockfile .",
     "prepare": "echo prepare",
     "prepublishOnly": "echo prepublishOnly",
-    "prepublishOnly_": "yarn run ncu && yarn run sort-package-json && yarn run test",
     "prepublishOnly:update": "yarn run ncu && yarn run sort-package-json",
     "prepack": "echo prepack",
     "pack": "echo pack",
     "postpack": "echo postpack",
     "publish": "echo publish",
     "postpublish": "echo postpublish",
-    "postpublish_": "git commit -m \"chore(release): publish\" .",
     "postpublishOnly": "echo postpublishOnly",
-    "ncu": "npx yarn-tool ncu -u",
-    "sort-package-json": "npx yarn-tool sort",
-    "tsc:default": "tsc -p tsconfig.json",
-    "tsc:esm": "tsc -p tsconfig.esm.json",
+    "ncu": "yarn-tool ncu -u",
+    "sort-package-json": "yarn-tool sort",
     "tsc:showConfig": "ynpx get-current-tsconfig -p"
   },
   "dependencies": {
-    "@bluelovers/fast-glob": "^3.0.4",
     "@ts-type/package-dts": "^1.0.60",
-    "@ts-type/tsconfig-to-program": "^1.0.0",
-    "cross-spawn-extra": "^2.1.0",
-    "debug-color2": "^1.2.7",
-    "get-current-tsconfig": "^1.0.9",
     "tslib": "^2",
-    "yargs": "^17.5.1"
+    "value-from-record": "^3.0.1"
   },
-  "packageManager": "yarn@^1.22.11"
+  "devDependencies": {},
+  "peerDependencies": {},
+  "packageManager": "yarn@^1.22.11",
+  "publishConfig": {
+    "access": "public"
+  }
 }
