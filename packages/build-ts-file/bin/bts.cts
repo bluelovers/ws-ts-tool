@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 import yargs from 'yargs';
-import getCurrentTsconfig from 'get-current-tsconfig';
-import FastGlob from '@bluelovers/fast-glob/bluebird';
-import { emitTsFiles } from '../index';
-import console from 'debug-color2/logger';
+import { getCurrentTsconfig } from 'get-current-tsconfig';
+import { async as FastGlob } from '@bluelovers/fast-glob/bluebird';
+import { emitTsFiles } from '../';
+import { consoleLogger as console } from 'debug-color2/logger';
 
 yargs
 	.option(`cwd`, {
@@ -110,8 +110,7 @@ yargs
 				].filter(v => v?.length)
 			}
 
-			return FastGlob
-				.async<string>([
+			return FastGlob<string>([
 					...args._,
 				] as any, {
 					cwd,

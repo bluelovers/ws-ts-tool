@@ -3,7 +3,7 @@
  */
 
 // @ts-ignore
-import * as ts from 'typescript';
+import ts from 'typescript';
 import { sync as crossSpawn } from 'cross-spawn-extra';
 import { ITsconfig } from '@ts-type/package-dts/tsconfig-json';
 import { dirname, resolve } from 'path';
@@ -11,9 +11,9 @@ import { dirname, resolve } from 'path';
 import unparse from 'yargs-unparser';
 // @ts-ignore
 import { JsxEmit, ModuleKind, ModuleResolutionKind, NewLineKind, ScriptTarget } from 'typescript';
-import valueFromRecord, { keyFromRecord } from 'value-from-record';
+import { valueFromRecord } from 'value-from-record';
 import { getCurrentTsconfig, IOptions as IGetCurrentTsconfigOptions } from 'get-current-tsconfig';
-import console from 'debug-color2/logger';
+import { consoleLogger as console } from 'debug-color2/logger';
 
 export function tsconfigToCliArgs(compilerOptions: ITsconfig["compilerOptions"]): string[]
 {
@@ -128,7 +128,7 @@ export function handleOptions(files: string | string[], options?: IOptions)
 		cwd = dirname(files[0])
 	}
 
-	const compilerOptions = options?.compilerOptions ?? getCurrentTsconfig({
+	const compilerOptions: ITsconfig["compilerOptions"] = options?.compilerOptions ?? getCurrentTsconfig({
 		...options?.getCurrentTsconfigOptions,
 		cwd,
 	}).compilerOptions;
@@ -140,6 +140,11 @@ export function handleOptions(files: string | string[], options?: IOptions)
 		cwd,
 		bin,
 		compilerOptions,
+	} as {
+		files: string[];
+		cwd: string;
+		bin: string;
+		compilerOptions: ITsconfig["compilerOptions"];
 	}
 }
 
@@ -163,7 +168,9 @@ export function spawnEmitTsFiles(inputFiles: string | string[], options?: IOptio
 	], {
 		cwd,
 		stdio: 'inherit',
-	})
+	});
+
+	return cp
 }
 
 export function emitTsFiles(files: string | string[], options?: IOptions)

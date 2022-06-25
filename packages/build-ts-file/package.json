@@ -2,7 +2,10 @@
   "name": "build-ts-file",
   "version": "1.0.14",
   "description": "",
-  "keywords": [],
+  "keywords": [
+    "create-by-yarn-tool",
+    "create-by-tsdx"
+  ],
   "homepage": "https://github.com/bluelovers/ws-ts-tool/tree/master/packages/build-ts-file#readme",
   "bugs": {
     "url": "https://github.com/bluelovers/ws-ts-tool/issues"
@@ -13,38 +16,78 @@
   },
   "license": "ISC",
   "author": "bluelovers",
-  "main": "index.js",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json",
+    "./src/*": "./src/*"
+  },
+  "main": "dist/index.cjs",
+  "unpkg": "dist/index.umd.production.min.cjs",
+  "module": "dist/index.esm.mjs",
+  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
   "bin": {
-    "bts": "bin/bts.js",
-    "build-ts-file": "bin/bts.js"
+    "bts": "bin/bts.cjs",
+    "build-ts-file": "bin/bts.cjs"
+  },
+  "directories": {
+    "test": "test"
   },
   "scripts": {
     "coverage": "npx nyc yarn run test",
     "lint": "npx eslint **/*.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "pretest": "echo pretest",
+    "test": "echo \"Error: no test specified\"",
     "test:jest": "jest --coverage",
     "test:mocha": "npx mocha --require ts-node/register \"!(node_modules)/**/*.{test,spec}.{ts,tsx}\"",
+    "posttest": "yarn run build",
+    "build": "yarn run build:tsdx && yarn run build:dts:bundle",
+    "build:dts:bundle": "ynpx dts-bundle-generator -o ./dist/index.d.ts ./src/index.ts --no-banner --inline-declare-global & echo build:dts:bundle",
+    "build:dts:copy": "copy .\\src\\index.d.ts .\\dist\\index.d.ts & echo build:dts",
+    "build:dts:tsc": "yarn run build:dts:tsc:emit && yarn run build:dts:copy",
+    "build:dts:tsc:emit": "tsc --emitDeclarationOnly --declaration --noEmit false",
+    "build:tsdx": "ynpx @bluelovers/tsdx build --target node --name index",
+    "ci:install": "echo ci:install",
+    "ci:build": "echo ci:build",
     "npm:publish": "npm publish",
     "npm:publish:lerna": "lerna publish --yes",
+    "preversion": "echo preversion && yarn run test",
+    "version": "echo version",
+    "postversion": "echo postversion",
+    "prepublish": "echo prepublish",
     "prepublish:lockfile": "npx sync-lockfile .",
+    "prepare": "echo prepare",
+    "prepublishOnly": "echo prepublishOnly",
     "prepublishOnly_": "yarn run ncu && yarn run sort-package-json && yarn run test",
+    "prepublishOnly:update": "yarn run ncu && yarn run sort-package-json",
+    "prepack": "echo prepack",
+    "pack": "echo pack",
+    "postpack": "echo postpack",
+    "publish": "echo publish",
+    "postpublish": "echo postpublish",
     "postpublish_": "git commit -m \"chore(release): publish\" .",
+    "postpublishOnly": "echo postpublishOnly",
     "ncu": "npx yarn-tool ncu -u",
     "sort-package-json": "npx yarn-tool sort",
     "tsc:default": "tsc -p tsconfig.json",
-    "tsc:esm": "tsc -p tsconfig.esm.json"
+    "tsc:esm": "tsc -p tsconfig.esm.json",
+    "tsc:showConfig": "ynpx get-current-tsconfig -p"
   },
   "dependencies": {
     "@bluelovers/fast-glob": "^3.0.4",
-    "@ts-type/package-dts": "^1.0.56",
+    "@ts-type/package-dts": "^1.0.60",
     "cross-spawn-extra": "^2.1.0",
     "debug-color2": "^1.2.7",
     "get-current-tsconfig": "^1.0.8",
-    "tslib": "^2.3.1",
+    "tslib": "^2",
     "value-from-record": "^3.0.1",
-    "yargs": "^17.3.0"
+    "yargs": "^17.5.1"
   },
-  "peerDependencies": {
-    "typescript": "*"
-  }
+  "peerDependencies": {},
+  "packageManager": "yarn@^1.22.11"
 }

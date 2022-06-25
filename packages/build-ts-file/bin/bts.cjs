@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const yargs_1 = tslib_1.__importDefault(require("yargs"));
-const get_current_tsconfig_1 = tslib_1.__importDefault(require("get-current-tsconfig"));
-const bluebird_1 = tslib_1.__importDefault(require("@bluelovers/fast-glob/bluebird"));
-const index_1 = require("../index");
-const logger_1 = tslib_1.__importDefault(require("debug-color2/logger"));
+const yargs_1 = __importDefault(require("yargs"));
+const get_current_tsconfig_1 = require("get-current-tsconfig");
+const bluebird_1 = require("@bluelovers/fast-glob/bluebird");
+const __1 = require("../");
+const logger_1 = require("debug-color2/logger");
 yargs_1.default
     .option(`cwd`, {
     alias: [
@@ -61,7 +63,7 @@ yargs_1.default
     ],
     handler(args) {
         var _a, _b, _c;
-        logger_1.default.dir((0, get_current_tsconfig_1.default)({
+        logger_1.consoleLogger.dir((0, get_current_tsconfig_1.getCurrentTsconfig)({
             // @ts-ignore
             cwd: args.cwd,
             // @ts-ignore
@@ -105,8 +107,7 @@ yargs_1.default
                 ((_c = args.emitDeclarationOnly) === null || _c === void 0 ? void 0 : _c.length) && `--emitDeclarationOnly`,
             ].filter(v => v === null || v === void 0 ? void 0 : v.length)
         };
-        return bluebird_1.default
-            .async([
+        return (0, bluebird_1.async)([
             ...args._,
         ], {
             cwd,
@@ -119,17 +120,17 @@ yargs_1.default
             }
         })
             .mapSeries(file => {
-            verbose && logger_1.default.debug(`emit:`, file);
-            let ret = (0, index_1.emitTsFiles)(file, {
+            verbose && logger_1.consoleLogger.debug(`emit:`, file);
+            let ret = (0, __1.emitTsFiles)(file, {
                 cwd: args.cwd,
                 verbose,
                 getCurrentTsconfigOptions,
             });
             if (ret.exitCode) {
-                logger_1.default.error(`error:`, file);
+                logger_1.consoleLogger.error(`error:`, file);
             }
             else {
-                logger_1.default.success(`success:`, file);
+                logger_1.consoleLogger.success(`success:`, file);
             }
         });
     },
@@ -138,4 +139,4 @@ yargs_1.default
     .help()
     .version()
     .argv;
-//# sourceMappingURL=bts.js.map
+//# sourceMappingURL=bts.cjs.map
