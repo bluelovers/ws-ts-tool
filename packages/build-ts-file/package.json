@@ -1,6 +1,6 @@
 {
   "name": "build-ts-file",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "",
   "keywords": [
     "create-by-yarn-tool",
@@ -51,7 +51,6 @@
     "build:dts:copy": "copy .\\src\\index.d.ts .\\dist\\index.d.ts & echo build:dts",
     "build:dts:tsc": "yarn run build:dts:tsc:emit && yarn run build:dts:copy",
     "build:dts:tsc:emit": "tsc --emitDeclarationOnly --declaration --noEmit false --skipLibCheck & echo build:dts:tsc:emit",
-
     "build:tsdx": "ynpx @bluelovers/tsdx build --target node",
     "ci:install": "echo ci:install",
     "ci:build": "echo ci:build",
@@ -82,7 +81,7 @@
   "dependencies": {
     "@bluelovers/fast-glob": "^3.0.4",
     "@ts-type/package-dts": "^1.0.60",
-    "@ts-type/tsconfig-to-program": "^1.0.0",
+    "@ts-type/tsconfig-to-program": "^1.0.1",
     "cross-spawn-extra": "^2.1.0",
     "debug-color2": "^1.2.7",
     "get-current-tsconfig": "^1.0.9",

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@1.0.15...build-ts-file@2.0.1) (2022-06-26)
+
+
+### Features
+
+* support `compilerHost` , `overwriteCompilerOptions` ([44c5a61](https://github.com/bluelovers/ws-ts-tool/commit/44c5a61562403e74ade69fcea2005d9f73c0167f))
+
+
+### BREAKING CHANGES
+
+* change return type of `emitTsFiles`
+
+
+
+
+
 ## [1.0.15](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@1.0.14...build-ts-file@1.0.15) (2022-06-25)
 
 **Note:** Version bump only for package build-ts-file
