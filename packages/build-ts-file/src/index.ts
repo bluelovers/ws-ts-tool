@@ -10,6 +10,7 @@ import { ITsconfig } from '@ts-type/package-dts/tsconfig-json';
 import { dirname, resolve } from 'path';
 // @ts-ignore
 import unparse from 'yargs-unparser';
+// @ts-ignore
 import { getCurrentTsconfig, IOptions as IGetCurrentTsconfigOptions } from 'get-current-tsconfig';
 import { consoleLogger as console } from 'debug-color2/logger';
 import { tsconfigToCliArgs, tsconfigToProgram } from '@ts-type/tsconfig-to-program';
@@ -21,11 +22,16 @@ export interface IOptions
 	compilerOptions?: ITsconfig["compilerOptions"];
 	getCurrentTsconfigOptions?: IGetCurrentTsconfigOptions;
 	verbose?: boolean,
+	compilerHost?: import("typescript").CompilerHost | ((programCompilerOptions: import("typescript").CompilerOptions) =>
+		import("typescript").CompilerHost),
+	overwriteCompilerOptions?: ITsconfig["compilerOptions"];
 }
 
 export function handleOptions(files: string | string[], options?: IOptions)
 {
-	let cwd = options?.cwd;
+	options ??= {};
+
+	let cwd = options.cwd;
 
 	if (!Array.isArray(files))
 	{
@@ -34,15 +40,23 @@ export function handleOptions(files: string | string[], options?: IOptions)
 
 	if (!cwd)
 	{
-		cwd = dirname(files[0])
+		cwd = dirname(resolve(process.cwd(), files[0]))
 	}
 
-	const compilerOptions: ITsconfig["compilerOptions"] = options?.compilerOptions ?? getCurrentTsconfig({
-		...options?.getCurrentTsconfigOptions,
+	let compilerOptions: ITsconfig["compilerOptions"] = options.compilerOptions ?? getCurrentTsconfig({
+		...options.getCurrentTsconfigOptions,
 		cwd,
 	}).compilerOptions;
 
-	const bin = options?.bin || 'tsc';
+	if (options.overwriteCompilerOptions)
+	{
+		compilerOptions = {
+			...compilerOptions,
+			...options.overwriteCompilerOptions,
+		}
+	}
+
+	const bin = options.bin || 'tsc';
 
 	return {
 		files,
@@ -82,30 +96,27 @@ export function spawnEmitTsFiles(inputFiles: string | string[], options?: IOptio
 	return cp
 }
 
-export function emitTsFiles(files: string | string[], options?: IOptions)
+/**
+ * @see https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API
+ */
+export function emitTsFiles(inputFiles: string | string[], options?: IOptions)
 {
-	let cwd = options?.cwd;
+	options ??= {};
 
-	if (!Array.isArray(files))
-	{
-		files = [files];
-	}
-
-	if (!cwd)
-	{
-		cwd = dirname(resolve(process.cwd(), files[0]))
-	}
+	let { cwd, compilerOptions, files } = handleOptions(inputFiles, options);
 
 	files = files.map(file => resolve(cwd, file));
 
-	let getCurrentTsconfigOptions = options?.getCurrentTsconfigOptions ?? {};
+	const programCompilerOptions = tsconfigToProgram(compilerOptions);
 
-	let compilerOptions = tsconfigToProgram(options?.compilerOptions ?? getCurrentTsconfig({
-		...getCurrentTsconfigOptions,
-		cwd,
-	}).compilerOptions);
+	let { compilerHost } = options;
 
-	const program = createProgram(files, compilerOptions as any);
+	if (typeof compilerHost === 'function')
+	{
+		compilerHost = compilerHost(programCompilerOptions);
+	}
+
+	const program = createProgram(files, programCompilerOptions, compilerHost);
 	const emitResult = program.emit();
 
 	const exitCode = emitResult.emitSkipped ? 1 : 0;
@@ -117,7 +128,7 @@ export function emitTsFiles(files: string | string[], options?: IOptions)
 		print = print.red;
 	}
 
-	if (options?.verbose)
+	if (options.verbose)
 	{
 		const allDiagnostics = getPreEmitDiagnostics(program)
 			.concat(emitResult.diagnostics)
@@ -154,7 +165,18 @@ export function emitTsFiles(files: string | string[], options?: IOptions)
 		exitCode,
 		emitResult,
 		compilerOptions,
+		programCompilerOptions,
 		program,
+		compilerHost,
+	} as {
+		cwd: string;
+		files: string[];
+		exitCode: number;
+		emitResult: import("typescript").EmitResult;
+		compilerOptions: ITsconfig["compilerOptions"];
+		programCompilerOptions: import("typescript").CompilerOptions;
+		program: import("typescript").Program;
+		compilerHost: import("typescript").CompilerHost;
 	}
 }
 

@@ -1,64 +1,70 @@
-import { createProgram as i, getPreEmitDiagnostics as t, flattenDiagnosticMessageText as e } from "typescript";
+import { createProgram as i, getPreEmitDiagnostics as e, flattenDiagnosticMessageText as t } from "typescript";
 
 import { sync as o } from "cross-spawn-extra";
 
-import { dirname as r, resolve as n } from "path";
+import { dirname as r, resolve as s } from "path";
 
-import { getCurrentTsconfig as s } from "get-current-tsconfig";
+import { getCurrentTsconfig as n } from "get-current-tsconfig";
 
 import { consoleLogger as l } from "debug-color2/logger";
 
-import { tsconfigToCliArgs as c, tsconfigToProgram as p } from "@ts-type/tsconfig-to-program/src/index";
+import { tsconfigToCliArgs as p, tsconfigToProgram as c } from "@ts-type/tsconfig-to-program";
 
-function handleOptions(i, t) {
-  var e;
-  let o = null == t ? void 0 : t.cwd;
-  Array.isArray(i) || (i = [ i ]), o || (o = r(i[0]));
-  const n = null !== (e = null == t ? void 0 : t.compilerOptions) && void 0 !== e ? e : s({
-    ...null == t ? void 0 : t.getCurrentTsconfigOptions,
-    cwd: o
+function handleOptions(i, e) {
+  var t, o;
+  null !== (t = e) && void 0 !== t || (e = {});
+  let l = e.cwd;
+  Array.isArray(i) || (i = [ i ]), l || (l = r(s(process.cwd(), i[0])));
+  let p = null !== (o = e.compilerOptions) && void 0 !== o ? o : n({
+    ...e.getCurrentTsconfigOptions,
+    cwd: l
   }).compilerOptions;
-  return {
+  return e.overwriteCompilerOptions && (p = {
+    ...p,
+    ...e.overwriteCompilerOptions
+  }), {
     files: i,
-    cwd: o,
-    bin: (null == t ? void 0 : t.bin) || "tsc",
-    compilerOptions: n
+    cwd: l,
+    bin: e.bin || "tsc",
+    compilerOptions: p
   };
 }
 
-function spawnEmitTsFiles(i, t) {
-  let {cwd: e, compilerOptions: r, files: n, bin: s} = handleOptions(i, t), l = c(r);
-  return o(s, [ ...l, "--tsBuildInfoFile", ".", n[0] ], {
-    cwd: e,
+function spawnEmitTsFiles(i, e) {
+  let {cwd: t, compilerOptions: r, files: s, bin: n} = handleOptions(i, e), l = p(r);
+  return o(n, [ ...l, "--tsBuildInfoFile", ".", s[0] ], {
+    cwd: t,
     stdio: "inherit"
   });
 }
 
-function emitTsFiles(o, c) {
-  var d, m;
-  let a = null == c ? void 0 : c.cwd;
-  Array.isArray(o) || (o = [ o ]), a || (a = r(n(process.cwd(), o[0]))), o = o.map((i => n(a, i)));
-  let f = null !== (d = null == c ? void 0 : c.getCurrentTsconfigOptions) && void 0 !== d ? d : {}, u = p(null !== (m = null == c ? void 0 : c.compilerOptions) && void 0 !== m ? m : s({
-    ...f,
-    cwd: a
-  }).compilerOptions);
-  const g = i(o, u), v = g.emit(), w = v.emitSkipped ? 1 : 0;
-  let O = l;
-  return w && (O = O.red), null != c && c.verbose && (t(g).concat(v.diagnostics).forEach((i => {
-    let t = e(i.messageText, "\n");
+function emitTsFiles(o, r) {
+  var n;
+  null !== (n = r) && void 0 !== n || (r = {});
+  let {cwd: p, compilerOptions: m, files: a} = handleOptions(o, r);
+  a = a.map((i => s(p, i)));
+  const f = c(m);
+  let {compilerHost: d} = r;
+  "function" == typeof d && (d = d(f));
+  const g = i(a, f, d), u = g.emit(), O = u.emitSkipped ? 1 : 0;
+  let w = l;
+  return O && (w = w.red), r.verbose && (e(g).concat(u.diagnostics).forEach((i => {
+    let e = t(i.messageText, "\n");
     if (i.file) {
-      const {line: e, character: o} = i.file.getLineAndCharacterOfPosition(i.start);
-      t = `${i.file.fileName} (${e + 1},${o + 1}): ${t}`;
+      const {line: t, character: o} = i.file.getLineAndCharacterOfPosition(i.start);
+      e = `${i.file.fileName} (${t + 1},${o + 1}): ${e}`;
     }
-    O.info("[Diagnostic]", t);
-  })), O.debug(`[CWD] ${a}`)), w && O.error(`[Program] Process exiting with code '${w}'.`), 
+    w.info("[Diagnostic]", e);
+  })), w.debug(`[CWD] ${p}`)), O && w.error(`[Program] Process exiting with code '${O}'.`), 
   {
-    cwd: a,
-    files: o,
-    exitCode: w,
-    emitResult: v,
-    compilerOptions: u,
-    program: g
+    cwd: p,
+    files: a,
+    exitCode: O,
+    emitResult: u,
+    compilerOptions: m,
+    programCompilerOptions: f,
+    program: g,
+    compilerHost: d
   };
 }
 

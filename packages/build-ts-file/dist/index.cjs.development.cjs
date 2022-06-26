@@ -7,25 +7,33 @@ var crossSpawnExtra = require('cross-spawn-extra');
 var path = require('path');
 var getCurrentTsconfig = require('get-current-tsconfig');
 var logger = require('debug-color2/logger');
-var index = require('@ts-type/tsconfig-to-program/src/index');
+var tsconfigToProgram = require('@ts-type/tsconfig-to-program');
 
 function handleOptions(files, options) {
-  var _options$compilerOpti;
+  var _options, _options$compilerOpti;
 
-  let cwd = options === null || options === void 0 ? void 0 : options.cwd;
+  (_options = options) !== null && _options !== void 0 ? _options : options = {};
+  let cwd = options.cwd;
 
   if (!Array.isArray(files)) {
     files = [files];
   }
 
   if (!cwd) {
-    cwd = path.dirname(files[0]);
+    cwd = path.dirname(path.resolve(process.cwd(), files[0]));
   }
 
-  const compilerOptions = (_options$compilerOpti = options === null || options === void 0 ? void 0 : options.compilerOptions) !== null && _options$compilerOpti !== void 0 ? _options$compilerOpti : getCurrentTsconfig.getCurrentTsconfig({ ...(options === null || options === void 0 ? void 0 : options.getCurrentTsconfigOptions),
+  let compilerOptions = (_options$compilerOpti = options.compilerOptions) !== null && _options$compilerOpti !== void 0 ? _options$compilerOpti : getCurrentTsconfig.getCurrentTsconfig({ ...options.getCurrentTsconfigOptions,
     cwd
   }).compilerOptions;
-  const bin = (options === null || options === void 0 ? void 0 : options.bin) || 'tsc';
+
+  if (options.overwriteCompilerOptions) {
+    compilerOptions = { ...compilerOptions,
+      ...options.overwriteCompilerOptions
+    };
+  }
+
+  const bin = options.bin || 'tsc';
   return {
     files,
     cwd,
@@ -40,32 +48,33 @@ function spawnEmitTsFiles(inputFiles, options) {
     files,
     bin
   } = handleOptions(inputFiles, options);
-  let args = index.tsconfigToCliArgs(compilerOptions);
+  let args = tsconfigToProgram.tsconfigToCliArgs(compilerOptions);
   let cp = crossSpawnExtra.sync(bin, [...args, `--tsBuildInfoFile`, `.`, files[0]], {
     cwd,
     stdio: 'inherit'
   });
   return cp;
 }
-function emitTsFiles(files, options) {
-  var _options$getCurrentTs, _options$compilerOpti2;
+function emitTsFiles(inputFiles, options) {
+  var _options2;
 
-  let cwd = options === null || options === void 0 ? void 0 : options.cwd;
-
-  if (!Array.isArray(files)) {
-    files = [files];
-  }
-
-  if (!cwd) {
-    cwd = path.dirname(path.resolve(process.cwd(), files[0]));
-  }
-
+  (_options2 = options) !== null && _options2 !== void 0 ? _options2 : options = {};
+  let {
+    cwd,
+    compilerOptions,
+    files
+  } = handleOptions(inputFiles, options);
   files = files.map(file => path.resolve(cwd, file));
-  let getCurrentTsconfigOptions = (_options$getCurrentTs = options === null || options === void 0 ? void 0 : options.getCurrentTsconfigOptions) !== null && _options$getCurrentTs !== void 0 ? _options$getCurrentTs : {};
-  let compilerOptions = index.tsconfigToProgram((_options$compilerOpti2 = options === null || options === void 0 ? void 0 : options.compilerOptions) !== null && _options$compilerOpti2 !== void 0 ? _options$compilerOpti2 : getCurrentTsconfig.getCurrentTsconfig({ ...getCurrentTsconfigOptions,
-    cwd
-  }).compilerOptions);
-  const program = typescript.createProgram(files, compilerOptions);
+  const programCompilerOptions = tsconfigToProgram.tsconfigToProgram(compilerOptions);
+  let {
+    compilerHost
+  } = options;
+
+  if (typeof compilerHost === 'function') {
+    compilerHost = compilerHost(programCompilerOptions);
+  }
+
+  const program = typescript.createProgram(files, programCompilerOptions, compilerHost);
   const emitResult = program.emit();
   const exitCode = emitResult.emitSkipped ? 1 : 0;
   let print = logger.consoleLogger;
@@ -74,7 +83,7 @@ function emitTsFiles(files, options) {
     print = print.red;
   }
 
-  if (options !== null && options !== void 0 && options.verbose) {
+  if (options.verbose) {
     const allDiagnostics = typescript.getPreEmitDiagnostics(program).concat(emitResult.diagnostics);
     allDiagnostics.forEach(diagnostic => {
       let message = typescript.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
@@ -102,7 +111,9 @@ function emitTsFiles(files, options) {
     exitCode,
     emitResult,
     compilerOptions,
-    program
+    programCompilerOptions,
+    program,
+    compilerHost
   };
 }
 

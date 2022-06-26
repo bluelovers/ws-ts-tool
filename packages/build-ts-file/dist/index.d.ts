@@ -11,6 +11,8 @@ export interface IOptions {
     compilerOptions?: ITsconfig["compilerOptions"];
     getCurrentTsconfigOptions?: IGetCurrentTsconfigOptions;
     verbose?: boolean;
+    compilerHost?: import("typescript").CompilerHost | ((programCompilerOptions: import("typescript").CompilerOptions) => import("typescript").CompilerHost);
+    overwriteCompilerOptions?: ITsconfig["compilerOptions"];
 }
 export declare function handleOptions(files: string | string[], options?: IOptions): {
     files: string[];
@@ -19,12 +21,17 @@ export declare function handleOptions(files: string | string[], options?: IOptio
     compilerOptions: ITsconfig["compilerOptions"];
 };
 export declare function spawnEmitTsFiles(inputFiles: string | string[], options?: IOptions): import("cross-spawn-extra").SpawnSyncReturns<Buffer>;
-export declare function emitTsFiles(files: string | string[], options?: IOptions): {
+/**
+ * @see https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API
+ */
+export declare function emitTsFiles(inputFiles: string | string[], options?: IOptions): {
     cwd: string;
     files: string[];
     exitCode: number;
     emitResult: import("typescript").EmitResult;
-    compilerOptions: import("typescript").CompilerOptions;
+    compilerOptions: ITsconfig["compilerOptions"];
+    programCompilerOptions: import("typescript").CompilerOptions;
     program: import("typescript").Program;
+    compilerHost: import("typescript").CompilerHost;
 };
 export default emitTsFiles;

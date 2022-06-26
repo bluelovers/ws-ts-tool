@@ -1,6 +1,6 @@
 {
   "name": "build-ts-file",
-  "version": "1.0.15",
+  "version": "2.0.0",
   "description": "",
   "keywords": [
     "create-by-yarn-tool",
@@ -52,7 +52,7 @@
     "build:dts:tsc": "yarn run build:dts:tsc:emit && yarn run build:dts:copy",
     "build:dts:tsc:emit": "tsc --emitDeclarationOnly --declaration --noEmit false --skipLibCheck & echo build:dts:tsc:emit",
 
-    "build:tsdx": "ynpx @bluelovers/tsdx build --target node --name index",
+    "build:tsdx": "ynpx @bluelovers/tsdx build --target node",
     "ci:install": "echo ci:install",
     "ci:build": "echo ci:build",
     "npm:publish": "npm publish",
