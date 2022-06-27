@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var e=require("typescript");exports.forEachDiagnostics=function forEachDiagnostics(t,i){return t.map((t=>{let s=e.flattenDiagnosticMessageText(t.messageText,"\n");if(t.file){const{line:e,character:i}=t.file.getLineAndCharacterOfPosition(t.start);s=`${t.file.fileName} (${e+1},${i+1}): ${s}`}return i(t,s)}))},exports.getAllDiagnostics=function getAllDiagnostics(t,i){return e.getPreEmitDiagnostics(t).concat(i.diagnostics)};
+//# sourceMappingURL=index.cjs.production.min.cjs.map

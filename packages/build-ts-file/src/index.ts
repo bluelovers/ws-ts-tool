@@ -3,8 +3,7 @@
  */
 
 // @ts-ignore
-import { JsxEmit, ModuleKind, ModuleResolutionKind, NewLineKind, ScriptTarget, createProgram, getPreEmitDiagnostics,
-	flattenDiagnosticMessageText } from 'typescript';
+import { JsxEmit, ModuleKind, ModuleResolutionKind, NewLineKind, ScriptTarget, createProgram } from 'typescript';
 import { sync as crossSpawn } from 'cross-spawn-extra';
 import { ITsconfig } from '@ts-type/package-dts/tsconfig-json';
 import { dirname, resolve } from 'path';
@@ -14,6 +13,7 @@ import unparse from 'yargs-unparser';
 import { getCurrentTsconfig, IOptions as IGetCurrentTsconfigOptions } from 'get-current-tsconfig';
 import { consoleLogger as console } from 'debug-color2/logger';
 import { tsconfigToCliArgs, tsconfigToProgram } from '@ts-type/tsconfig-to-program';
+import { forEachDiagnostics, getAllDiagnostics } from '@ts-type/program-all-diagnostics';
 
 export interface IOptions
 {
@@ -130,26 +130,13 @@ export function emitTsFiles(inputFiles: string | string[], options?: IOptions)
 
 	if (options.verbose)
 	{
-		const allDiagnostics = getPreEmitDiagnostics(program)
-			.concat(emitResult.diagnostics)
-		;
+		const allDiagnostics = getAllDiagnostics(program, emitResult);
 
-		allDiagnostics.forEach(diagnostic =>
-		{
-			let message = flattenDiagnosticMessageText(diagnostic.messageText, "\n");
-
-			if (diagnostic.file)
-			{
-				const { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
-
-				message = `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`
-			}
-
+		forEachDiagnostics(allDiagnostics, (_diagnostic, message) => {
 			print.info(`[Diagnostic]`, message);
 		});
 
 		print.debug(`[CWD] ${cwd}`);
-
 	}
 
 	if (exitCode)

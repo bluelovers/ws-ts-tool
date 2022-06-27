@@ -8,6 +8,7 @@ var path = require('path');
 var getCurrentTsconfig = require('get-current-tsconfig');
 var logger = require('debug-color2/logger');
 var tsconfigToProgram = require('@ts-type/tsconfig-to-program');
+var programAllDiagnostics = require('@ts-type/program-all-diagnostics');
 
 function handleOptions(files, options) {
   var _options, _options$compilerOpti;
@@ -84,18 +85,8 @@ function emitTsFiles(inputFiles, options) {
   }
 
   if (options.verbose) {
-    const allDiagnostics = typescript.getPreEmitDiagnostics(program).concat(emitResult.diagnostics);
-    allDiagnostics.forEach(diagnostic => {
-      let message = typescript.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
-
-      if (diagnostic.file) {
-        const {
-          line,
-          character
-        } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
-        message = `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`;
-      }
-
+    const allDiagnostics = programAllDiagnostics.getAllDiagnostics(program, emitResult);
+    programAllDiagnostics.forEachDiagnostics(allDiagnostics, (_diagnostic, message) => {
       print.info(`[Diagnostic]`, message);
     });
     print.debug(`[CWD] ${cwd}`);
