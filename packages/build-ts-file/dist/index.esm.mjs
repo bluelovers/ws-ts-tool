@@ -21,13 +21,16 @@ function handleOptions(i, o) {
     ...o.getCurrentTsconfigOptions,
     cwd: p
   }).compilerOptions;
-  return o.overwriteCompilerOptions && (l = {
+  o.overwriteCompilerOptions && (l = {
     ...l,
     ...o.overwriteCompilerOptions
-  }), {
+  });
+  const m = o.bin || "tsc";
+  return {
+    ...o,
     files: i,
     cwd: p,
-    bin: o.bin || "tsc",
+    bin: m,
     compilerOptions: l
   };
 }
@@ -41,29 +44,26 @@ function spawnEmitTsFiles(i, t) {
 }
 
 function emitTsFiles(o, t) {
-  var r;
-  null !== (r = t) && void 0 !== r || (t = {});
-  let {cwd: n, compilerOptions: c, files: d} = handleOptions(o, t);
-  d = d.map((i => e(n, i)));
-  const a = p(c);
-  let {compilerHost: f} = t;
-  "function" == typeof f && (f = f(a));
-  const g = i(d, a, f), u = g.emit(), w = u.emitSkipped ? 1 : 0;
-  let O = s;
-  if (w && (O = O.red), t.verbose) {
-    const i = l(g, u);
+  let {cwd: r, compilerOptions: n, files: c, logger: d, verbose: a, compilerHost: f} = handleOptions(o, t);
+  c = c.map((i => e(r, i)));
+  const g = p(n);
+  "function" == typeof f && (f = f(g));
+  const u = i(c, g, f), w = u.emit(), O = w.emitSkipped ? 1 : 0;
+  let h = null != d ? d : s;
+  if (O && (h = h.red), a) {
+    const i = l(u, w);
     m(i, ((i, o) => {
-      O.info("[Diagnostic]", o);
-    })), O.debug(`[CWD] ${n}`);
+      h.info("[Diagnostic]", o);
+    })), h.debug(`[CWD] ${r}`);
   }
-  return w && O.error(`[Program] Process exiting with code '${w}'.`), {
-    cwd: n,
-    files: d,
-    exitCode: w,
-    emitResult: u,
-    compilerOptions: c,
-    programCompilerOptions: a,
-    program: g,
+  return O && h.error(`[Program] Process exiting with code '${O}'.`), {
+    cwd: r,
+    files: c,
+    exitCode: O,
+    emitResult: w,
+    compilerOptions: n,
+    programCompilerOptions: g,
+    program: u,
     compilerHost: f
   };
 }

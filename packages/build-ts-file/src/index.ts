@@ -11,7 +11,8 @@ import { dirname, resolve } from 'path';
 import unparse from 'yargs-unparser';
 // @ts-ignore
 import { getCurrentTsconfig, IOptions as IGetCurrentTsconfigOptions } from 'get-current-tsconfig';
-import { consoleLogger as console } from 'debug-color2/logger';
+import { consoleLogger } from 'debug-color2/logger';
+import { Console2 } from 'debug-color2';
 import { tsconfigToCliArgs, tsconfigToProgram } from '@ts-type/tsconfig-to-program';
 import { forEachDiagnostics, getAllDiagnostics } from '@ts-type/program-all-diagnostics';
 
@@ -25,6 +26,7 @@ export interface IOptions
 	compilerHost?: import("typescript").CompilerHost | ((programCompilerOptions: import("typescript").CompilerOptions) =>
 		import("typescript").CompilerHost),
 	overwriteCompilerOptions?: ITsconfig["compilerOptions"];
+	logger?: Console2,
 }
 
 export function handleOptions(files: string | string[], options?: IOptions)
@@ -59,11 +61,12 @@ export function handleOptions(files: string | string[], options?: IOptions)
 	const bin = options.bin || 'tsc';
 
 	return {
+		...options,
 		files,
 		cwd,
 		bin,
 		compilerOptions,
-	} as {
+	} as IOptions & {
 		files: string[];
 		cwd: string;
 		bin: string;
@@ -101,15 +104,18 @@ export function spawnEmitTsFiles(inputFiles: string | string[], options?: IOptio
  */
 export function emitTsFiles(inputFiles: string | string[], options?: IOptions)
 {
-	options ??= {};
-
-	let { cwd, compilerOptions, files } = handleOptions(inputFiles, options);
+	let {
+		cwd,
+		compilerOptions,
+		files,
+		logger,
+		verbose,
+		compilerHost,
+	} = handleOptions(inputFiles, options);
 
 	files = files.map(file => resolve(cwd, file));
 
 	const programCompilerOptions = tsconfigToProgram(compilerOptions);
-
-	let { compilerHost } = options;
 
 	if (typeof compilerHost === 'function')
 	{
@@ -121,14 +127,14 @@ export function emitTsFiles(inputFiles: string | string[], options?: IOptions)
 
 	const exitCode = emitResult.emitSkipped ? 1 : 0;
 
-	let print = console;
+	let print = logger ?? consoleLogger;
 
 	if (exitCode)
 	{
 		print = print.red;
 	}
 
-	if (options.verbose)
+	if (verbose)
 	{
 		const allDiagnostics = getAllDiagnostics(program, emitResult);
 

@@ -35,7 +35,7 @@ function handleOptions(files, options) {
   }
 
   const bin = options.bin || 'tsc';
-  return {
+  return { ...options,
     files,
     cwd,
     bin,
@@ -57,19 +57,16 @@ function spawnEmitTsFiles(inputFiles, options) {
   return cp;
 }
 function emitTsFiles(inputFiles, options) {
-  var _options2;
-
-  (_options2 = options) !== null && _options2 !== void 0 ? _options2 : options = {};
   let {
     cwd,
     compilerOptions,
-    files
+    files,
+    logger: logger$1,
+    verbose,
+    compilerHost
   } = handleOptions(inputFiles, options);
   files = files.map(file => path.resolve(cwd, file));
   const programCompilerOptions = tsconfigToProgram.tsconfigToProgram(compilerOptions);
-  let {
-    compilerHost
-  } = options;
 
   if (typeof compilerHost === 'function') {
     compilerHost = compilerHost(programCompilerOptions);
@@ -78,13 +75,13 @@ function emitTsFiles(inputFiles, options) {
   const program = typescript.createProgram(files, programCompilerOptions, compilerHost);
   const emitResult = program.emit();
   const exitCode = emitResult.emitSkipped ? 1 : 0;
-  let print = logger.consoleLogger;
+  let print = logger$1 !== null && logger$1 !== void 0 ? logger$1 : logger.consoleLogger;
 
   if (exitCode) {
     print = print.red;
   }
 
-  if (options.verbose) {
+  if (verbose) {
     const allDiagnostics = programAllDiagnostics.getAllDiagnostics(program, emitResult);
     programAllDiagnostics.forEachDiagnostics(allDiagnostics, (_diagnostic, message) => {
       print.info(`[Diagnostic]`, message);
