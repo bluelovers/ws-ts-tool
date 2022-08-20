@@ -5,6 +5,6 @@ export declare function tsconfigToCliArgs(compilerOptions: ITsconfig["compilerOp
 /**
  * for `ts.createProgram`
  */
-export declare function tsconfigToProgram(compilerOptions: ITsconfig["compilerOptions"]): CompilerOptions;
+export declare function tsconfigToProgram<T extends CompilerOptions>(compilerOptions: ITsconfig["compilerOptions"]): T;
 
 export {};

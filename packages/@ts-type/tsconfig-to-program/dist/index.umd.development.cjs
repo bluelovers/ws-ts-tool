@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('value-from-record'), require('typescript')) :
 	typeof define === 'function' && define.amd ? define(['exports', 'value-from-record', 'typescript'], factory) :
-	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Index = {}, global.valueFromRecord, global.typescript));
+	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.TsTypeTsconfigToProgram = {}, global.valueFromRecord, global.typescript));
 })(this, (function (exports, valueFromRecord, typescript) { 'use strict';
 
 	function tsconfigToCliArgs(compilerOptions) {

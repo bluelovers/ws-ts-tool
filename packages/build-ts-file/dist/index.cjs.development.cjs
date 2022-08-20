@@ -11,7 +11,7 @@ var tsconfigToProgram = require('@ts-type/tsconfig-to-program');
 var programAllDiagnostics = require('@ts-type/program-all-diagnostics');
 
 function handleOptions(files, options) {
-  var _options, _options$compilerOpti;
+  var _options, _options$tsconfig, _options$compilerOpti;
 
   (_options = options) !== null && _options !== void 0 ? _options : options = {};
   let cwd = options.cwd;
@@ -24,9 +24,10 @@ function handleOptions(files, options) {
     cwd = path.dirname(path.resolve(process.cwd(), files[0]));
   }
 
-  let compilerOptions = (_options$compilerOpti = options.compilerOptions) !== null && _options$compilerOpti !== void 0 ? _options$compilerOpti : getCurrentTsconfig.getCurrentTsconfig({ ...options.getCurrentTsconfigOptions,
+  const tsconfig = (_options$tsconfig = options.tsconfig) !== null && _options$tsconfig !== void 0 ? _options$tsconfig : getCurrentTsconfig.getCurrentTsconfig({ ...options.getCurrentTsconfigOptions,
     cwd
-  }).compilerOptions;
+  });
+  let compilerOptions = (_options$compilerOpti = options.compilerOptions) !== null && _options$compilerOpti !== void 0 ? _options$compilerOpti : tsconfig === null || tsconfig === void 0 ? void 0 : tsconfig.compilerOptions;
 
   if (options.overwriteCompilerOptions) {
     compilerOptions = { ...compilerOptions,
@@ -39,6 +40,7 @@ function handleOptions(files, options) {
     files,
     cwd,
     bin,
+    tsconfig,
     compilerOptions
   };
 }
@@ -59,6 +61,7 @@ function spawnEmitTsFiles(inputFiles, options) {
 function emitTsFiles(inputFiles, options) {
   let {
     cwd,
+    tsconfig,
     compilerOptions,
     files,
     logger: logger$1,
@@ -69,7 +72,7 @@ function emitTsFiles(inputFiles, options) {
   const programCompilerOptions = tsconfigToProgram.tsconfigToProgram(compilerOptions);
 
   if (typeof compilerHost === 'function') {
-    compilerHost = compilerHost(programCompilerOptions);
+    compilerHost = compilerHost(programCompilerOptions, tsconfig);
   }
 
   const program = typescript.createProgram(files, programCompilerOptions, compilerHost);
@@ -98,6 +101,7 @@ function emitTsFiles(inputFiles, options) {
     files,
     exitCode,
     emitResult,
+    tsconfig,
     compilerOptions,
     programCompilerOptions,
     program,

@@ -10,28 +10,30 @@ import { consoleLogger as s } from "debug-color2/logger";
 
 import { tsconfigToCliArgs as n, tsconfigToProgram as p } from "@ts-type/tsconfig-to-program";
 
-import { getAllDiagnostics as l, forEachDiagnostics as m } from "@ts-type/program-all-diagnostics";
+import { getAllDiagnostics as l, forEachDiagnostics as c } from "@ts-type/program-all-diagnostics";
 
 function handleOptions(i, o) {
-  var s, n;
+  var s, n, p;
   null !== (s = o) && void 0 !== s || (o = {});
-  let p = o.cwd;
-  Array.isArray(i) || (i = [ i ]), p || (p = t(e(process.cwd(), i[0])));
-  let l = null !== (n = o.compilerOptions) && void 0 !== n ? n : r({
+  let l = o.cwd;
+  Array.isArray(i) || (i = [ i ]), l || (l = t(e(process.cwd(), i[0])));
+  const c = null !== (n = o.tsconfig) && void 0 !== n ? n : r({
     ...o.getCurrentTsconfigOptions,
-    cwd: p
-  }).compilerOptions;
-  o.overwriteCompilerOptions && (l = {
-    ...l,
+    cwd: l
+  });
+  let m = null !== (p = o.compilerOptions) && void 0 !== p ? p : null == c ? void 0 : c.compilerOptions;
+  o.overwriteCompilerOptions && (m = {
+    ...m,
     ...o.overwriteCompilerOptions
   });
-  const m = o.bin || "tsc";
+  const f = o.bin || "tsc";
   return {
     ...o,
     files: i,
-    cwd: p,
-    bin: m,
-    compilerOptions: l
+    cwd: l,
+    bin: f,
+    tsconfig: c,
+    compilerOptions: m
   };
 }
 
@@ -44,27 +46,28 @@ function spawnEmitTsFiles(i, t) {
 }
 
 function emitTsFiles(o, t) {
-  let {cwd: r, compilerOptions: n, files: c, logger: d, verbose: a, compilerHost: f} = handleOptions(o, t);
-  c = c.map((i => e(r, i)));
-  const g = p(n);
-  "function" == typeof f && (f = f(g));
-  const u = i(c, g, f), w = u.emit(), O = w.emitSkipped ? 1 : 0;
+  let {cwd: r, tsconfig: n, compilerOptions: m, files: f, logger: d, verbose: a, compilerHost: g} = handleOptions(o, t);
+  f = f.map((i => e(r, i)));
+  const u = p(m);
+  "function" == typeof g && (g = g(u, n));
+  const w = i(f, u, g), O = w.emit(), v = O.emitSkipped ? 1 : 0;
   let h = null != d ? d : s;
-  if (O && (h = h.red), a) {
-    const i = l(u, w);
-    m(i, ((i, o) => {
+  if (v && (h = h.red), a) {
+    const i = l(w, O);
+    c(i, ((i, o) => {
       h.info("[Diagnostic]", o);
     })), h.debug(`[CWD] ${r}`);
   }
-  return O && h.error(`[Program] Process exiting with code '${O}'.`), {
+  return v && h.error(`[Program] Process exiting with code '${v}'.`), {
     cwd: r,
-    files: c,
-    exitCode: O,
-    emitResult: w,
-    compilerOptions: n,
-    programCompilerOptions: g,
-    program: u,
-    compilerHost: f
+    files: f,
+    exitCode: v,
+    emitResult: O,
+    tsconfig: n,
+    compilerOptions: m,
+    programCompilerOptions: u,
+    program: w,
+    compilerHost: g
   };
 }
 
