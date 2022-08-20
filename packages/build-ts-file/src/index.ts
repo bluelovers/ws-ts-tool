@@ -20,10 +20,11 @@ export interface IOptions
 {
 	bin?: string;
 	cwd?: string;
+	tsconfig?: ITsconfig;
 	compilerOptions?: ITsconfig["compilerOptions"];
 	getCurrentTsconfigOptions?: IGetCurrentTsconfigOptions;
 	verbose?: boolean,
-	compilerHost?: import("typescript").CompilerHost | ((programCompilerOptions: import("typescript").CompilerOptions) =>
+	compilerHost?: import("typescript").CompilerHost | ((programCompilerOptions: import("typescript").CompilerOptions, tsconfig: ITsconfig) =>
 		import("typescript").CompilerHost),
 	overwriteCompilerOptions?: ITsconfig["compilerOptions"];
 	logger?: Console2,
@@ -45,10 +46,12 @@ export function handleOptions(files: string | string[], options?: IOptions)
 		cwd = dirname(resolve(process.cwd(), files[0]))
 	}
 
-	let compilerOptions: ITsconfig["compilerOptions"] = options.compilerOptions ?? getCurrentTsconfig({
+	const tsconfig = options.tsconfig ?? getCurrentTsconfig({
 		...options.getCurrentTsconfigOptions,
 		cwd,
-	}).compilerOptions;
+	});
+
+	let compilerOptions: ITsconfig["compilerOptions"] = options.compilerOptions ?? tsconfig?.compilerOptions;
 
 	if (options.overwriteCompilerOptions)
 	{
@@ -65,11 +68,13 @@ export function handleOptions(files: string | string[], options?: IOptions)
 		files,
 		cwd,
 		bin,
+		tsconfig,
 		compilerOptions,
 	} as IOptions & {
 		files: string[];
 		cwd: string;
 		bin: string;
+		tsconfig: ITsconfig;
 		compilerOptions: ITsconfig["compilerOptions"];
 	}
 }
@@ -106,6 +111,7 @@ export function emitTsFiles(inputFiles: string | string[], options?: IOptions)
 {
 	let {
 		cwd,
+		tsconfig,
 		compilerOptions,
 		files,
 		logger,
@@ -119,7 +125,7 @@ export function emitTsFiles(inputFiles: string | string[], options?: IOptions)
 
 	if (typeof compilerHost === 'function')
 	{
-		compilerHost = compilerHost(programCompilerOptions);
+		compilerHost = compilerHost(programCompilerOptions, tsconfig);
 	}
 
 	const program = createProgram(files, programCompilerOptions, compilerHost);
@@ -157,6 +163,7 @@ export function emitTsFiles(inputFiles: string | string[], options?: IOptions)
 		files,
 		exitCode,
 		emitResult,
+		tsconfig,
 		compilerOptions,
 		programCompilerOptions,
 		program,

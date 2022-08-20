@@ -37,7 +37,7 @@ export function tsconfigToCliArgs(compilerOptions: ITsconfig["compilerOptions"])
 /**
  * for `ts.createProgram`
  */
-export function tsconfigToProgram(compilerOptions: ITsconfig["compilerOptions"])
+export function tsconfigToProgram<T extends CompilerOptions>(compilerOptions: ITsconfig["compilerOptions"])
 {
 	return Object.entries(compilerOptions)
 		.reduce((a, [key, value]) =>
@@ -92,5 +92,5 @@ export function tsconfigToProgram(compilerOptions: ITsconfig["compilerOptions"])
 			}
 
 			return a
-		}, {} as CompilerOptions)
+		}, {} as T)
 }
