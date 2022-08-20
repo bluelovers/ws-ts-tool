@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.2](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@2.0.1...build-ts-file@2.0.2) (2022-08-20)
+
+
+### Features
+
+* allow configuration logger ([b13d57e](https://github.com/bluelovers/ws-ts-tool/commit/b13d57e927f67a955ad80749b2c3539942b16219))
+
+
+
+
+
 ## [2.0.1](https://github.com/bluelovers/ws-ts-tool/compare/build-ts-file@1.0.15...build-ts-file@2.0.1) (2022-06-26)
 
 
