@@ -35,9 +35,16 @@ export type IModuleKindNumber = ITSNumberEnumToNumber<IModuleKind>;
 export type IModuleKindInput = IModuleKind | IModuleKindNumber;
 export type IModuleKindInputMixin = ITSAndTypeAndStringLiteral<IModuleKindKeys | IModuleKindInput, string | number>;
 
-function _assertNumber<T extends number>(n: unknown): asserts n is T
+function _assertNumber<T extends number>(n: unknown | T): asserts n is T
 {
-	strictEqual(typeof n, 'number');
+	const type = typeof n;
+	strictEqual(type, 'number', new TypeError(`should be a number, but got ${type}`));
+}
+
+function _assertString<T extends string>(n: unknown | T): asserts n is T
+{
+	const type = typeof n;
+	strictEqual(type, 'string', new TypeError(`should be a string, but got ${type}`));
 }
 
 export function tsModuleKindIsCJS(module: IModuleKindInput | number): module is ITsModuleKindIsCJS
@@ -50,6 +57,28 @@ export function tsModuleKindIsESM(module: IModuleKindInput | number): module is 
 {
 	_assertNumber(module);
 	return TS_MODULE_KIND_IS_ESM.includes(module)
+}
+
+export function isModuleKindName(module: IModuleKindInputMixin): module is IModuleKindKeys
+{
+	return (typeof module === 'string' && module in EnumModuleKind)
+}
+
+export function toModuleKindName(module: IModuleKindInputMixin)
+{
+	let name: IModuleKindKeys;
+
+	if (isModuleKindName(module))
+	{
+		name = module
+	}
+	else
+	{
+		name = EnumModuleKind[handleModuleKindLazy(module)] as IModuleKindKeys
+		_assertString(name);
+	}
+
+	return name;
 }
 
 export function handleModuleKindLazy(module: IModuleKindInputMixin)
@@ -79,7 +108,7 @@ export function tsModuleKindIsESMLazy(module: IModuleKindInputMixin): module is 
 	return tsModuleKindIsESM(handleModuleKindLazy(module))
 }
 
-export function tsModuleKind(module: IModuleKindInput)
+export function tsModuleKindType(module: IModuleKindInput)
 {
 	if (tsModuleKindIsCJS(module))
 	{
@@ -91,9 +120,21 @@ export function tsModuleKind(module: IModuleKindInput)
 	}
 }
 
+export function tsModuleKindExt(module: IModuleKindInput)
+{
+	if (tsModuleKindIsCJS(module))
+	{
+		return EnumJsKindExt.cjs as const
+	}
+	else if (tsModuleKindIsESM(module))
+	{
+		return EnumJsKindExt.esm as const
+	}
+}
+
 export function tsModuleKindLazy(module: IModuleKindInputMixin)
 {
-	return tsModuleKind(handleModuleKindLazy(module))
+	return tsModuleKindType(handleModuleKindLazy(module))
 }
 
 export function getExtensionsByCompilerOptions(options: CompilerOptions & {
@@ -106,18 +147,18 @@ export function getExtensionsByCompilerOptions(options: CompilerOptions & {
 	const module: ModuleKind = handleModuleKindLazy(options.module);
 
 	const useESM = tsModuleKindIsESM(module);
-	const useCJS = tsModuleKindIsCJS(module);
+	const useCJS = !useESM && tsModuleKindIsCJS(module);
 
 	if (options.jsx) tsExtensions.push('.tsx');
 	if (useESM) tsExtensions.push('.mts');
-	if (useCJS) tsExtensions.push('.cts');
+	else if (useCJS) tsExtensions.push('.cts');
 
 	if (options.allowJs)
 	{
 		jsExtensions.push('.js');
 		if (options.jsx) jsExtensions.push('.jsx');
 		if (useESM) tsExtensions.push('.mjs');
-		if (useCJS) tsExtensions.push('.cjs');
+		else if (useCJS) tsExtensions.push('.cjs');
 	}
 
 	return {

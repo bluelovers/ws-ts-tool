@@ -2,7 +2,7 @@
 
 exports[`ModuleKind 0 1`] = `
 {
-  "actual": undefined,
+  "actual": "cjs",
   "input": "0",
   "module": 0,
   "moduleName": "None",
@@ -182,7 +182,7 @@ exports[`ModuleKind NodeNext 1`] = `
 
 exports[`ModuleKind None 1`] = `
 {
-  "actual": undefined,
+  "actual": "cjs",
   "input": "None",
   "module": 0,
   "moduleName": "None",

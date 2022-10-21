@@ -5,8 +5,13 @@ import { __root } from '../__root';
 import { array_unique } from 'array-hyper-unique';
 import { $enum } from "ts-enum-util";
 
-// @ts-ignore
-const TS_MODULE_KIND_IS_CJS = array_unique([ModuleKind.CommonJS, ModuleKind.Node12 ?? 100, ModuleKind.Node16] as const);
+const TS_MODULE_KIND_IS_CJS = array_unique([
+	ModuleKind.None,
+	ModuleKind.CommonJS,
+	// @ts-ignore
+	ModuleKind.Node12 ?? 100,
+	ModuleKind.Node16,
+] as const);
 const TS_MODULE_KIND_IS_ESM = array_unique([
 	ModuleKind.ES2015,
 	ModuleKind.ES2020,
@@ -19,7 +24,7 @@ export function buildTsModuleKind()
 {
 	const lines: string[] = [];
 
-	lines.push(`import { ModuleKind } from 'typescript';`);
+	lines.push(`import type { ModuleKind } from 'typescript';`);
 	lines.push(``);
 
 	lines.push(`export enum EnumModuleKind`);
@@ -48,22 +53,22 @@ export function buildTsModuleKind()
 
 	let arr = TS_MODULE_KIND_IS_CJS.slice().map((v) =>
 	{
-		return `${v} as ModuleKind.${ModuleKind[v]}`
+		return `${v} as ModuleKind.${ModuleKind[v]} | EnumModuleKind.${ModuleKind[v]}`
 	});
 
 	lines.push(`export type ITsModuleKindIsCJS = ${TS_MODULE_KIND_IS_CJS.slice()
-		.map(v => `ModuleKind.${ModuleKind[v]}`)
+		.map(v => `ModuleKind.${ModuleKind[v]} | EnumModuleKind.${ModuleKind[v]}`)
 		.join(' | ')};`);
 	lines.push(`export const TS_MODULE_KIND_IS_CJS = [${arr.join(', ')}] as const;`);
 	lines.push(``);
 
 	arr = TS_MODULE_KIND_IS_ESM.slice().map((v) =>
 	{
-		return `${v} as ModuleKind.${ModuleKind[v]}`
+		return `${v} as ModuleKind.${ModuleKind[v]} | EnumModuleKind.${ModuleKind[v]}`
 	});
 
 	lines.push(`export type ITsModuleKindIsESM = ${TS_MODULE_KIND_IS_ESM.slice()
-		.map(v => `ModuleKind.${ModuleKind[v]}`)
+		.map(v => `ModuleKind.${ModuleKind[v]} | EnumModuleKind.${ModuleKind[v]}`)
 		.join(' | ')};`);
 	lines.push(`export const TS_MODULE_KIND_IS_ESM = [${arr.join(', ')}] as const;`);
 	lines.push(``);
