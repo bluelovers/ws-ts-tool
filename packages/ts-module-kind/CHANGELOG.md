@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.4](https://github.com/bluelovers/ws-ts-tool/compare/ts-module-kind@1.0.3...ts-module-kind@1.0.4) (2022-10-21)
+
+
+
+### 🔖　Miscellaneous
+
+* . ([862bb2c](https://github.com/bluelovers/ws-ts-tool/commit/862bb2c2f0e1879e319fe0f43d0712d950b93f47))
+
+
+
 ## [1.0.3](https://github.com/bluelovers/ws-ts-tool/compare/ts-module-kind@1.0.2...ts-module-kind@1.0.3) (2022-10-21)
 
 
