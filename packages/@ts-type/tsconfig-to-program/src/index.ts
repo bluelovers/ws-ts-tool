@@ -1,6 +1,14 @@
 import { ITsconfig } from '@ts-type/package-dts/tsconfig-json';
 import { valueFromRecord } from 'value-from-record';
-import { JsxEmit, ModuleKind, ModuleResolutionKind, NewLineKind, ScriptTarget, CompilerOptions } from 'typescript';
+import {
+	JsxEmit,
+	ModuleKind,
+	ModuleResolutionKind,
+	NewLineKind,
+	ScriptTarget,
+	CompilerOptions,
+	ImportsNotUsedAsValues, ModuleDetectionKind,
+} from 'typescript';
 
 export function tsconfigToCliArgs(compilerOptions: ITsconfig["compilerOptions"]): string[]
 {
@@ -50,30 +58,33 @@ export function tsconfigToProgram<T extends CompilerOptions>(compilerOptions: IT
 					value = valueFromRecord<string>(value, JsxEmit) ?? value
 					break;
 				case 'module':
-					value = valueFromRecord<string>(value, ModuleKind) ?? value
+					value = valueFromRecord<ModuleKind>(value, ModuleKind) ?? value
 					break;
 				case 'moduleResolution':
 
-					if (value === 'node' || value === 'nodenext')
+					value = valueFromRecord<ModuleResolutionKind>(value, ModuleResolutionKind) ?? value
+
+					if (value === 'node')
 					{
 						value = ModuleResolutionKind.NodeJs
 					}
-					else
-					{
-						_skip = true;
-					}
 
+					break;
+				case 'moduleDetection':
+					value = valueFromRecord<ModuleDetectionKind>(value, ModuleDetectionKind) ?? value
 					break;
 				case 'newLine':
 
-					if ((value as string)?.toLowerCase?.() === 'lf')
+					switch ((value as string)?.toLowerCase?.())
 					{
-						value = NewLineKind.LineFeed
-						//value = valueFromRecord(value, NewLineKind)
-					}
-					else
-					{
-						_skip = true;
+						case 'lf':
+							value = NewLineKind.LineFeed
+							break;
+						case 'crlf':
+							value = NewLineKind.CarriageReturnLineFeed
+							break;
+						default:
+							_skip = true;
 					}
 
 					break;
@@ -82,6 +93,9 @@ export function tsconfigToProgram<T extends CompilerOptions>(compilerOptions: IT
 					break;
 				case 'incremental':
 					_skip = true;
+					break;
+				case 'importsNotUsedAsValues':
+					value = valueFromRecord<string>(value, ImportsNotUsedAsValues) ?? value;
 					break;
 			}
 

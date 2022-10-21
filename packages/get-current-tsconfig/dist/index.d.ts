@@ -9,7 +9,7 @@ export interface IOptions {
 export interface IOptionsOutput extends IOptions {
 	outputFile?: string;
 }
-export declare type IOptionsArgv = [
+export type IOptionsArgv = [
 	cwd?: string,
 	bin?: string,
 	sourceFile?: string,
@@ -20,6 +20,9 @@ export declare type IOptionsArgv = [
 export declare function handleOptions(...argv: IOptionsArgv): IOptions;
 export declare function getCurrentTsconfig(...argv: IOptionsArgv): ITsconfig;
 export declare function outputCurrentTsconfig(options?: IOptionsOutput): string;
-export default getCurrentTsconfig;
+
+export {
+	getCurrentTsconfig as default,
+};
 
 export {};

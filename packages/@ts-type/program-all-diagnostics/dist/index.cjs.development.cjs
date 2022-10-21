@@ -10,7 +10,6 @@ function getAllDiagnostics(program, emitResult) {
 function forEachDiagnostics(allDiagnostics, cb) {
   return allDiagnostics.map(diagnostic => {
     let message = typescript.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
-
     if (diagnostic.file) {
       const {
         line,
@@ -18,7 +17,6 @@ function forEachDiagnostics(allDiagnostics, cb) {
       } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
       message = `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`;
     }
-
     return cb(diagnostic, message);
   });
 }

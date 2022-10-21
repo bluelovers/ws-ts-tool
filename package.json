@@ -16,8 +16,11 @@
   ],
   "scripts": {
     "review:all": "yarn-tool ws run review --concurrency 1",
+    "review:since": "yarn run review:all -- --since",
     "coverage:all": "yarn-tool ws run coverage --concurrency 1",
+    "coverage:since": "yarn run coverage:all -- --since",
     "lint:all": "yarn-tool ws run lint --concurrency 1",
+    "lint:since": "yarn run lint:all -- --since",
     "pretest": "echo pretest",
     "test": "yarn run test:since",
     "test:all": "yarn-tool ws run test --concurrency 1",
@@ -25,14 +28,19 @@
     "test:since": "yarn run test:all -- --since",
     "test:snapshot:all": "yarn-tool ws run test:snapshot --concurrency 1",
     "test:snapshot:since": "yarn run test:snapshot:all -- --since",
+    "test:tsd:all": "yarn-tool ws run test:tsd --concurrency 1",
+    "test:tsd:since": "yarn run test:tsd:all -- --since",
     "install:frozenLockfile": "yarn-tool install --frozen-lockfile",
     "install:reset-lockfile": "yarn-tool install --reset-lockfile",
     "install:resetLockfile": "yarn-tool install --reset-lockfile",
     "build:all": "yarn-tool ws run build --concurrency 1",
+    "build:since": "yarn run build:all -- --since",
     "ci:install": "yarn install --frozen-lockfile && yarn add -W typescript@next jest ts-jest ts-node ynpx lerna yarn-tool",
     "ci:build": "echo ci:build",
     "lerna:publish": "yarn run prepublishOnly:root && lerna publish && yarn run postpublishOnly",
     "lerna:publish:yes": "yarn run prepublishOnly:root && lerna publish --yes --bump patch && yarn run postpublishOnly",
+    "ws:fix-all": "yarn-tool fix-all  --overwriteHostedGitInfo",
+    "ws:fix-all:resetStaticFiles": "yarn run ws:fix-all -- --resetStaticFiles",
     "preversion": "yarn run test",
     "version": "echo version",
     "postversion": "yarn-tool fix-all",
@@ -52,27 +60,30 @@
     "postpublishOnly": "yarn run postpublishOnly:ws-root-changelog & echo postpublishOnly",
     "postpublishOnly:ws-root-changelog": "ynpx ws-root-changelog & git add ./CHANGELOG.md & git commit ./CHANGELOG.md -m \"chore(changelog): update changelog toc in workspaces root\" & echo update changelog toc in workspaces root",
     "ncu": "yarn run ncu:ws",
-    "ncu:root": "yarn-tool ncu -u",
     "ncu:ws": "yarn-tool ncu -u --AA",
+    "ncu:root": "yarn-tool ncu -u",
     "sort-package-json": "yarn run sort-package-json:root && yarn run sort-package-json:ws",
     "sort-package-json:root": "yarn-tool sort",
     "sort-package-json:ws": "yarn-tool ws sort",
-    "tsc:showConfig": "ynpx get-current-tsconfig -p",
-    "ws:fix-all": "yarn-tool fix-all  --overwriteHostedGitInfo"
+    "tsc:showConfig": "ynpx get-current-tsconfig -p"
   },
   "resolutions": {},
+  "dependencies": {
+    "@yarn-tool/ws-find-up-paths": "^1.0.10",
+    "array-hyper-unique": "^2.1.4",
+    "convert-source-map": "^2.0.0",
+    "ts-enum-util": "^4.0.2"
+  },
   "devDependencies": {
-    "@bluelovers/tsconfig": "1.0.30",
+    "@bluelovers/tsconfig": "1.0.31",
+    "@types/convert-source-map": "^1.5.2",
     "@types/fs-extra": "^9.0.13",
-    "@types/jest": "^28.1.7",
+    "@types/jest": "^29.2.0",
     "@types/node": "*",
-    "@types/yargs": "^17.0.11",
+    "@types/yargs": "^17.0.13",
     "typescript": "next"
   },
   "peerDependencies": {
-    "lerna": "^5"
-  },
-  "dependencies": {
-    "@yarn-tool/ws-find-up-paths": "^1.0.2"
+    "lerna": "^6"
   }
 }
