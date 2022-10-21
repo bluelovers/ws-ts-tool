@@ -92,8 +92,11 @@ function tsModuleKindExt(module) {
     return ".mjs";
   }
 }
-function tsModuleKindLazy(module) {
+function tsModuleKindTypeLazy(module) {
   return tsModuleKindType(handleModuleKindLazy(module));
+}
+function tsModuleKindExtLazy(module) {
+  return tsModuleKindExt(handleModuleKindLazy(module));
 }
 function getExtensionsByCompilerOptions(options) {
   const tsExtensions = ['.ts'];
@@ -125,10 +128,11 @@ exports.handleModuleKindLazy = handleModuleKindLazy;
 exports.isModuleKindName = isModuleKindName;
 exports.toModuleKindName = toModuleKindName;
 exports.tsModuleKindExt = tsModuleKindExt;
+exports.tsModuleKindExtLazy = tsModuleKindExtLazy;
 exports.tsModuleKindIsCJS = tsModuleKindIsCJS;
 exports.tsModuleKindIsCJSLazy = tsModuleKindIsCJSLazy;
 exports.tsModuleKindIsESM = tsModuleKindIsESM;
 exports.tsModuleKindIsESMLazy = tsModuleKindIsESMLazy;
-exports.tsModuleKindLazy = tsModuleKindLazy;
 exports.tsModuleKindType = tsModuleKindType;
+exports.tsModuleKindTypeLazy = tsModuleKindTypeLazy;
 //# sourceMappingURL=index.cjs.development.cjs.map

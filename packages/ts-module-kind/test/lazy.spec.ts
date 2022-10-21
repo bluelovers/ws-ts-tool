@@ -1,5 +1,5 @@
 import { ModuleKind } from 'typescript';
-import { handleModuleKindLazy, tsModuleKindLazy } from '../src/index';
+import { handleModuleKindLazy, tsModuleKindTypeLazy } from '../src/index';
 import { array_unique } from 'array-hyper-unique';
 import { EnumModuleKind } from '../src/const/ts-module';
 
@@ -25,7 +25,7 @@ describe(`ModuleKind`, () =>
 				module: expect.any(Number)
 			});
 
-			let actual = tsModuleKindLazy(input);
+			let actual = tsModuleKindTypeLazy(input);
 			expect({
 				input,
 				module,

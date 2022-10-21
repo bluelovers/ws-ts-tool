@@ -132,9 +132,14 @@ export function tsModuleKindExt(module: IModuleKindInput)
 	}
 }
 
-export function tsModuleKindLazy(module: IModuleKindInputMixin)
+export function tsModuleKindTypeLazy(module: IModuleKindInputMixin)
 {
 	return tsModuleKindType(handleModuleKindLazy(module))
+}
+
+export function tsModuleKindExtLazy(module: IModuleKindInputMixin)
+{
+	return tsModuleKindExt(handleModuleKindLazy(module))
 }
 
 export function getExtensionsByCompilerOptions(options: CompilerOptions & {

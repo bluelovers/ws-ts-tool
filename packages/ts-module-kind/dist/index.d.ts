@@ -53,7 +53,8 @@ export declare function tsModuleKindIsCJSLazy(module: IModuleKindInputMixin): mo
 export declare function tsModuleKindIsESMLazy(module: IModuleKindInputMixin): module is ITsModuleKindIsESM;
 export declare function tsModuleKindType(module: IModuleKindInput): EnumJsKind;
 export declare function tsModuleKindExt(module: IModuleKindInput): EnumJsKindExt;
-export declare function tsModuleKindLazy(module: IModuleKindInputMixin): EnumJsKind;
+export declare function tsModuleKindTypeLazy(module: IModuleKindInputMixin): EnumJsKind;
+export declare function tsModuleKindExtLazy(module: IModuleKindInputMixin): EnumJsKindExt;
 export declare function getExtensionsByCompilerOptions(options: CompilerOptions & {
 	module?: IModuleKindInputMixin;
 }): {

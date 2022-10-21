@@ -60,8 +60,12 @@ function tsModuleKindExt(e) {
   return tsModuleKindIsCJS(e) ? ".cjs" : tsModuleKindIsESM(e) ? ".mjs" : void 0;
 }
 
-function tsModuleKindLazy(e) {
+function tsModuleKindTypeLazy(e) {
   return tsModuleKindType(handleModuleKindLazy(e));
+}
+
+function tsModuleKindExtLazy(e) {
+  return tsModuleKindExt(handleModuleKindLazy(e));
 }
 
 function getExtensionsByCompilerOptions(e) {
@@ -82,5 +86,5 @@ function getExtensionsByCompilerOptions(e) {
   e.cjs = ".cjs", e.esm = ".mjs";
 }(u || (u = {}));
 
-export { d as EnumJsKind, u as EnumJsKindExt, t as TS_MODULE_KIND_IS_CJS, o as TS_MODULE_KIND_IS_ESM, getExtensionsByCompilerOptions as default, getExtensionsByCompilerOptions, handleModuleKindLazy, isModuleKindName, toModuleKindName, tsModuleKindExt, tsModuleKindIsCJS, tsModuleKindIsCJSLazy, tsModuleKindIsESM, tsModuleKindIsESMLazy, tsModuleKindLazy, tsModuleKindType };
+export { d as EnumJsKind, u as EnumJsKindExt, t as TS_MODULE_KIND_IS_CJS, o as TS_MODULE_KIND_IS_ESM, getExtensionsByCompilerOptions as default, getExtensionsByCompilerOptions, handleModuleKindLazy, isModuleKindName, toModuleKindName, tsModuleKindExt, tsModuleKindExtLazy, tsModuleKindIsCJS, tsModuleKindIsCJSLazy, tsModuleKindIsESM, tsModuleKindIsESMLazy, tsModuleKindType, tsModuleKindTypeLazy };
 //# sourceMappingURL=index.esm.mjs.map

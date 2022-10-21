@@ -43,6 +43,10 @@ function tsModuleKindType(e) {
   return tsModuleKindIsCJS(e) ? "cjs" : tsModuleKindIsESM(e) ? "esm" : void 0;
 }
 
+function tsModuleKindExt(e) {
+  return tsModuleKindIsCJS(e) ? ".cjs" : tsModuleKindIsESM(e) ? ".mjs" : void 0;
+}
+
 function getExtensionsByCompilerOptions(e) {
   const s = [ ".ts" ], t = [], n = handleModuleKindLazy(e.module), o = tsModuleKindIsESM(n), d = !o && tsModuleKindIsCJS(n);
   return e.jsx && s.push(".tsx"), o ? s.push(".mts") : d && s.push(".cts"), e.allowJs && (t.push(".js"), 
@@ -66,13 +70,13 @@ exports.toModuleKindName = function toModuleKindName(t) {
     const t = typeof e;
     s.strictEqual(t, "string", new TypeError(`should be a string, but got ${t}`));
   }(n)), n;
-}, exports.tsModuleKindExt = function tsModuleKindExt(e) {
-  return tsModuleKindIsCJS(e) ? ".cjs" : tsModuleKindIsESM(e) ? ".mjs" : void 0;
+}, exports.tsModuleKindExt = tsModuleKindExt, exports.tsModuleKindExtLazy = function tsModuleKindExtLazy(e) {
+  return tsModuleKindExt(handleModuleKindLazy(e));
 }, exports.tsModuleKindIsCJS = tsModuleKindIsCJS, exports.tsModuleKindIsCJSLazy = function tsModuleKindIsCJSLazy(e) {
   return tsModuleKindIsCJS(handleModuleKindLazy(e));
 }, exports.tsModuleKindIsESM = tsModuleKindIsESM, exports.tsModuleKindIsESMLazy = function tsModuleKindIsESMLazy(e) {
   return tsModuleKindIsESM(handleModuleKindLazy(e));
-}, exports.tsModuleKindLazy = function tsModuleKindLazy(e) {
+}, exports.tsModuleKindType = tsModuleKindType, exports.tsModuleKindTypeLazy = function tsModuleKindTypeLazy(e) {
   return tsModuleKindType(handleModuleKindLazy(e));
-}, exports.tsModuleKindType = tsModuleKindType;
+};
 //# sourceMappingURL=index.cjs.production.min.cjs.map
