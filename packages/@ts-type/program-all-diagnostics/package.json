@@ -1,6 +1,6 @@
 {
   "name": "@ts-type/program-all-diagnostics",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "keywords": [
     "create-by-yarn-tool",
@@ -74,7 +74,6 @@
     "sort-package-json": "yarn-tool sort",
     "tsc:showConfig": "ynpx get-current-tsconfig -p"
   },
-  "dependencies": {},
   "packageManager": "yarn@^1.22.11",
   "publishConfig": {
     "access": "public"
