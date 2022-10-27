@@ -3,7 +3,7 @@
 /// <reference types="node" />
 /// <reference types="expect" />
 
-import { getExtensionsByFormat, EnumTsdxFormat } from '../src/index';
+import { getExtensionsByFormat, EnumTsdxFormat, defaultAllowedFormat } from '../src/index';
 
 beforeAll(async () =>
 {
@@ -12,12 +12,7 @@ beforeAll(async () =>
 
 describe(`getExtensionsByFormat`, () =>
 {
-	[
-		EnumTsdxFormat.umd,
-		EnumTsdxFormat.cjs,
-		EnumTsdxFormat.esm,
-		EnumTsdxFormat.system,
-	].forEach(format => {
+	defaultAllowedFormat().forEach(format => {
 		test(format, () =>
 		{
 

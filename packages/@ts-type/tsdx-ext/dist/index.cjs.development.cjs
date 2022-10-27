@@ -9,20 +9,35 @@ exports.EnumTsdxFormat = void 0;
   EnumTsdxFormat["esm"] = "esm";
   EnumTsdxFormat["system"] = "system";
 })(exports.EnumTsdxFormat || (exports.EnumTsdxFormat = {}));
+const allowFormat = /*#__PURE__*/defaultAllowedFormat();
+const cacheFormatExt = /*#__PURE__*/new Map();
 function defaultFormatOrder() {
   return ["esm", "cjs", "umd"];
 }
 function defaultAllowedFormat() {
   return ["esm", "cjs", "umd", "system"];
 }
-const allowFormat = /*#__PURE__*/defaultAllowedFormat();
 function isAllowedFormat(format) {
   return allowFormat.includes(format);
 }
+function _getExtensionsByFormat(currentFormat) {
+  const list = [...(currentFormat === "cjs" ? ['.cts'] : currentFormat === "esm" ? ['.mts'] : currentFormat === "umd" ? ['.umd.ts'] : []), '.ts', '.tsx', ...(currentFormat === "cjs" || currentFormat === "esm" ? [] : ['.mts', '.cts']), '.jsx', ...(currentFormat === "cjs" ? ['.cjs'] : currentFormat === "esm" ? ['.mjs'] : currentFormat === "umd" ? ['.umd.js'] : []), '.js', ...(currentFormat === "cjs" || currentFormat === "esm" ? [] : ['.mjs', '.cjs']), '.js'];
+  return list;
+}
 function getExtensionsByFormat(currentFormat) {
-  return [...(currentFormat === "cjs" ? ['.cts'] : currentFormat === "esm" ? ['.mts'] : currentFormat === "umd" ? ['.umd.ts'] : []), '.ts', '.tsx', ...(currentFormat === "cjs" || currentFormat === "esm" ? [] : ['.mts', '.cts']), '.jsx', ...(currentFormat === "cjs" ? ['.cjs'] : currentFormat === "esm" ? ['.mjs'] : currentFormat === "umd" ? ['.umd.js'] : []), '.js', ...(currentFormat === "cjs" || currentFormat === "esm" ? [] : ['.mjs', '.cjs']), '.js'];
+  var _list;
+  let list = cacheFormatExt.get(currentFormat);
+  if (!((_list = list) !== null && _list !== void 0 && _list.length)) {
+    if (!isAllowedFormat(currentFormat)) {
+      throw new RangeError(`Invalid format ${currentFormat}`);
+    }
+    list = _getExtensionsByFormat(currentFormat);
+    cacheFormatExt.set(currentFormat, list);
+  }
+  return list.slice();
 }
 
+exports._getExtensionsByFormat = _getExtensionsByFormat;
 exports.default = getExtensionsByFormat;
 exports.defaultAllowedFormat = defaultAllowedFormat;
 exports.defaultFormatOrder = defaultFormatOrder;

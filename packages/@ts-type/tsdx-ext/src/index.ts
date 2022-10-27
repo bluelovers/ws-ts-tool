@@ -10,6 +10,10 @@ export const enum EnumTsdxFormat
 
 export type IModuleFormat = ITSTypeAndStringLiteral<EnumTsdxFormat>;
 
+const allowFormat = defaultAllowedFormat() as readonly IModuleFormat[];
+
+const cacheFormatExt = new Map<IModuleFormat, ReturnType<typeof _getExtensionsByFormat>>();
+
 export function defaultFormatOrder()
 {
 	return [
@@ -29,16 +33,14 @@ export function defaultAllowedFormat()
 	] as const satisfies readonly IModuleFormat[]
 }
 
-const allowFormat = defaultAllowedFormat() as readonly IModuleFormat[];
-
 export function isAllowedFormat(format: IModuleFormat): format is EnumTsdxFormat
 {
 	return allowFormat.includes(format)
 }
 
-export function getExtensionsByFormat(currentFormat: IModuleFormat)
+export function _getExtensionsByFormat(currentFormat: IModuleFormat)
 {
-	return [
+	const list = [
 		...(currentFormat === EnumTsdxFormat.cjs ? [
 			'.cts' as const,
 		] as const : currentFormat === EnumTsdxFormat.esm ? [
@@ -66,7 +68,27 @@ export function getExtensionsByFormat(currentFormat: IModuleFormat)
 			'.cjs' as const,
 		] as const),
 		'.js' as const,
-	] satisfies `.${string}`[]
+	] satisfies `.${string}`[];
+
+	return list as Readonly<typeof list>;
+}
+
+export function getExtensionsByFormat(currentFormat: IModuleFormat)
+{
+	let list = cacheFormatExt.get(currentFormat);
+
+	if (!list?.length)
+	{
+		if (!isAllowedFormat(currentFormat))
+		{
+			throw new RangeError(`Invalid format ${currentFormat}`)
+		}
+
+		list = _getExtensionsByFormat(currentFormat);
+		cacheFormatExt.set(currentFormat, list);
+	}
+
+	return list.slice() as typeof list;
 }
 
 export default getExtensionsByFormat
