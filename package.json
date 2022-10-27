@@ -72,7 +72,8 @@
     "@yarn-tool/ws-find-up-paths": "^1.0.10",
     "array-hyper-unique": "^2.1.4",
     "convert-source-map": "^2.0.0",
-    "ts-enum-util": "^4.0.2"
+    "ts-enum-util": "^4.0.2",
+    "ts-type": "^3.0.1"
   },
   "devDependencies": {
     "@bluelovers/tsconfig": "1.0.31",
