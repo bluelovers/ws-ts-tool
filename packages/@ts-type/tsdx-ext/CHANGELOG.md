@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.4](https://github.com/bluelovers/ws-ts-tool/compare/@ts-type/tsdx-extensions-by-format@1.0.3...@ts-type/tsdx-extensions-by-format@1.0.4) (2022-10-27)
+
+
+
+### ✨　Features
+
+* cache result ([6230615](https://github.com/bluelovers/ws-ts-tool/commit/62306151392e44f8cc761c33fc9699ee8b30adb1))
+
+
+
 ## [1.0.3](https://github.com/bluelovers/ws-ts-tool/compare/@ts-type/tsdx-extensions-by-format@1.0.2...@ts-type/tsdx-extensions-by-format@1.0.3) (2022-10-27)
 
 
