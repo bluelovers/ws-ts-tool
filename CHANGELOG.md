@@ -7,4 +7,5 @@ Please see the individual package changelogs for what's new:
 * 🌏 [`ts-module-kind`](./packages/ts-module-kind/CHANGELOG.md "packages/ts-module-kind") *packages/ts-module-kind*
 * 🌏 [`@ts-type/program-all-diagnostics`](./packages/@ts-type/program-all-diagnostics/CHANGELOG.md "packages/@ts-type/program-all-diagnostics") *packages/@ts-type/program-all-diagnostics*
 * 🌏 [`@ts-type/tsconfig-to-program`](./packages/@ts-type/tsconfig-to-program/CHANGELOG.md "packages/@ts-type/tsconfig-to-program") *packages/@ts-type/tsconfig-to-program*
+* 🌏 [`@ts-type/tsdx-extensions-by-format`](./packages/@ts-type/tsdx-ext/CHANGELOG.md "packages/@ts-type/tsdx-ext") *packages/@ts-type/tsdx-ext*
 
