@@ -19,6 +19,23 @@ export function defaultFormatOrder()
 	] as const satisfies readonly IModuleFormat[]
 }
 
+export function defaultAllowedFormat()
+{
+	return [
+		EnumTsdxFormat.esm,
+		EnumTsdxFormat.cjs,
+		EnumTsdxFormat.umd,
+		EnumTsdxFormat.system,
+	] as const satisfies readonly IModuleFormat[]
+}
+
+const allowFormat = defaultAllowedFormat() as readonly IModuleFormat[];
+
+export function isAllowedFormat(format: IModuleFormat): format is EnumTsdxFormat
+{
+	return allowFormat.includes(format)
+}
+
 export function getExtensionsByFormat(currentFormat: IModuleFormat)
 {
 	return [
