@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getExtensionsByFormat cjs 1`] = `
+[
+  ".cts",
+  ".ts",
+  ".tsx",
+  ".jsx",
+  ".cjs",
+  ".js",
+  ".js",
+]
+`;
+
+exports[`getExtensionsByFormat esm 1`] = `
+[
+  ".mts",
+  ".ts",
+  ".tsx",
+  ".jsx",
+  ".mjs",
+  ".js",
+  ".js",
+]
+`;
+
+exports[`getExtensionsByFormat system 1`] = `
+[
+  ".ts",
+  ".tsx",
+  ".mts",
+  ".cts",
+  ".jsx",
+  ".js",
+  ".mjs",
+  ".cjs",
+  ".js",
+]
+`;
+
+exports[`getExtensionsByFormat umd 1`] = `
+[
+  ".umd.ts",
+  ".ts",
+  ".tsx",
+  ".mts",
+  ".cts",
+  ".jsx",
+  ".umd.js",
+  ".js",
+  ".mjs",
+  ".cjs",
+  ".js",
+]
+`;
